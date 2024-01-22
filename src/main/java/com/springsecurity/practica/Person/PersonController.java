@@ -1,5 +1,6 @@
 package com.springsecurity.practica.Person;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,14 @@ import lombok.RequiredArgsConstructor;
 public class PersonController {
 
     private final IPersonService personService;
-    
+
     @PostMapping
     public void createPerson(@RequestBody Person person){
         personService.createPerson(person);
+    }
+
+    @GetMapping
+    public String welcome() {
+        return "Welcome Spring Security";
     }
 }

@@ -1,6 +1,5 @@
 package com.springsecurity.practica.Person;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
