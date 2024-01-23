@@ -10,18 +10,23 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/person")
+@RequestMapping(value = "/api/v1/person")
 public class PersonController {
 
-    private final IPersonService personService;
+    //private final IPersonService personService;
 
-    @PostMapping
+    /*@PostMapping
     public void createPerson(@RequestBody Person person){
         personService.createPerson(person);
+    }*/
+
+    @PostMapping
+    public String Bienvenidos(){
+        return "Bienvenidos";
     }
 
     @GetMapping
-    public String welcome() {
+    public String welcome(){
         return "Welcome Spring Security";
     }
 }
