@@ -1,4 +1,4 @@
-package com.springsecurity.practica.Config;
+package com.springsecurity.practica.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
