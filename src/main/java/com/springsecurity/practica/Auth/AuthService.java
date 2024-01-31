@@ -4,7 +4,6 @@ import com.springsecurity.practica.Jwt.JwtService;
 import com.springsecurity.practica.User.Role;
 import com.springsecurity.practica.User.User;
 import com.springsecurity.practica.User.UserRepository;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.stereotype.Service;
 
 import com.springsecurity.practica.Jwt.AuthResponse;
