@@ -17,6 +17,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Clase que permite manejar la creación y comprobación del token
+ */
 @Service
 public class JwtService {
 

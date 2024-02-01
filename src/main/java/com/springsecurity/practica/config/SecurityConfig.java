@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,6 +15,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Clase que permite configurar el manejo de los filtros de Spring Security
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -23,20 +27,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http
-            .csrf(csrf -> 
+            .csrf(csrf ->
                 csrf.disable())
-            .authorizeHttpRequests(authRequest -> 
-                authRequest
+            .authorizeHttpRequests(authRequestConfig ->
+                authRequestConfig
                     .requestMatchers("/auth/**").permitAll()
-                    .anyRequest().authenticated()
-                    )
-            .formLogin(withDefaults())
-            .build();        
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("Username not fount"));
+                    .anyRequest().authenticated())
+            .sessionManagement(sessionConfig ->
+                sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .build();
     }
 }
