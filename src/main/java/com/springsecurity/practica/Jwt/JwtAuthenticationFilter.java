@@ -5,10 +5,14 @@ import java.net.http.HttpHeaders;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final Logger loggerClass = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, 
@@ -33,13 +38,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
            
         final String token = getTokenFromRequest(request);
-        final String userName;
 
         if (Objects.isNull(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        extractAuthenticatedUserFromToken(token, request);
+
+        filterChain.doFilter(request, response);
+    }
+
+    private void extractAuthenticatedUserFromToken(String token, HttpServletRequest request) {
+
+        final String userName;
         userName = jwtService.getUserNameFromToken(token);
 
         if (Objects.nonNull(userName) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
@@ -52,10 +64,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                                     null,
                                                     userDetails.getAuthorities());
 
+                usernameAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(usernameAuthentication);
+
+                var details = (WebAuthenticationDetails) usernameAuthentication.getDetails();
+
+                loggerClass.info("Sessión ID = "+ details.getSessionId());
             }
         }
-        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
