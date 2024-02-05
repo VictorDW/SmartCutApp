@@ -4,7 +4,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,15 +28,16 @@ public class JwtService {
     @Value("${security.jwt.expiration-minutes}")// se asigna el tiempo de expiración de token
     private  Long EXPIRATION_MINUTES;
 
+    //Métodos necesarios para la Autenticación
     public String getToken(UserDetails user) {
-        return getToken(extraClaims(), user);
+        return getToken(extraClaims((User) user), user);
     }
 
-    private String getToken(Function<User, Map<String, Object>> extraClaims, UserDetails user) {
+    private String getToken(Map<String, ?> extraClaims, UserDetails user) {
 
         return Jwts
         .builder()
-        .setClaims(extraClaims.apply((User)user))
+        .setClaims(extraClaims)
         .setSubject(user.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(expirationDate())
@@ -49,18 +49,25 @@ public class JwtService {
         return new Date(System.currentTimeMillis() + (EXPIRATION_MINUTES * 60 * 1000));
     }
 
-    private Function<User,Map<String, Object>> extraClaims() {
-        return user -> {
-            Map<String, Object> claims = new HashMap<>();
+    private Map<String, Object> extraClaims(User user) {
+
+        Map<String, Object> claims = new HashMap<>();
             claims.put("Name", user.getFirstName());
             claims.put("Rol", user.getAuthorities());
-            return claims;
-        };
+
+        return claims;
     }
 
     private Key getKey() {
         // decodifica la clave secreta
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes); // a su vez se hashea la clave para mayor seguridad
+    }
+
+    //Métodos necesarios para la Autorización
+    public String getUserNameFromToken(String token) {
+    }
+
+    public boolean isValidToken(String token, UserDetails userDetails) {
     }
 }
