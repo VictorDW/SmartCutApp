@@ -28,10 +28,26 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Este método permite autenticar un usuario registrado en la base de datos
+     * @param request
+     * @return el token generado con los datos del usuario autenticado
+     */
     public AuthResponse login(LoginRequest request) {
 
+        /*
+        * esta implementación es fundamental para la autenticación, ya que permite almacenar los datos del usuario
+        * sin autenticar, para posteriormente contener el usuario ya autenticado
+        */
         var usernameAuthentication = new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword());
 
+        /*
+        * internamente en el método authenticate, se valida que el usuario si exista en la base de datos, luego
+        * que sus credenciales sean iguales, si está correcto, se creará un UsernamePasswordAuthenticationToken
+        * de nuevo por medio de su método static authenticated que retorna una instancia de sí mismo, que por medio
+        * de su constructor, recibe el usuario de la base de datos, y sus permisos, a su vez al retornar esa instancia
+        * como un Authentication, se puede obtener el usuario autenticado con el getPrincipal.
+        */
         Authentication userAuthenticated = authenticationManager.authenticate(usernameAuthentication);
 
         return AuthResponse.builder()
@@ -42,6 +58,12 @@ public class AuthService {
                 )
                 .build();
     }
+
+    /**
+     * Método que permite registrar un usuario a la base de datos
+     * @param request
+     * @return el token generado a partir del usuario registrado
+     */
     @Transactional
     public AuthResponse register(RegisterRequest request) {
 
@@ -61,6 +83,11 @@ public class AuthService {
                     .build();
     }
 
+    /**
+     * Permite codificar la contraseña pasada por el parámetro
+     * @param password
+     * @return la contraseña hasheada
+     */
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
     }

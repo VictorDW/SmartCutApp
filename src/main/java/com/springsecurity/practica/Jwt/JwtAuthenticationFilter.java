@@ -30,8 +30,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final Logger loggerClass = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    //private final Logger loggerClass = LoggerFactory.getLogger(JwtAuthenticationFilter.class); -> permite crear la instancia para el logger
 
+    /**
+     * Este método heredado de OncePerRequestFilter permite dar la implementación del filtro personalizado,
+     * para validar el token y continuar con la cadena de filtros
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, 
                                     @NonNull HttpServletResponse response,  
@@ -49,6 +58,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     *Este método permite obtener el usuario autenticado y autorizado, para tenerlo en el contexto de SecurityContext,
+     *además se verifica la valides del token.
+     * @param token
+     * @param request
+     */
     private void extractAuthenticatedUserFromToken(String token, HttpServletRequest request) {
 
         final String userName;
@@ -64,19 +79,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                                     null,
                                                     userDetails.getAuthorities());
 
+                //permite agregar más detalles de la solicitud de autenticación, como dirección ip, número de serie del certificado, etc.
                 usernameAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
+                //Se setea el usuario autenticado y autorizado en el SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(usernameAuthentication);
 
+                /* Ejemplo de como optener los detalles
                 var details = (WebAuthenticationDetails) usernameAuthentication.getDetails();
-
-                loggerClass.info("Sessión ID = "+ details.getSessionId());
+                //Mediante un logger podemos observar en consola la dirección ip
+                loggerClass.info("Remote Address = "+ details.getRemoteAddress());
+                 */
             }
         }
     }
 
+    /**
+     * Este método permite obtener el token en limpio, sacándolo del header de la request enviada
+     * @param request
+     * @return el token
+     */
     private String getTokenFromRequest(HttpServletRequest request) {
 
+        //Sacar el token del header
         final String authHeader = request.getHeader("Authorization");
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {

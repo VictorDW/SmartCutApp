@@ -13,6 +13,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Esta clase permite mapear el resultado de la base de datos, como una Object de Java que contiene los datos del
+ * usuario, pero a su vez se le implementa la Interfaz UserDetails, ya que por medio de esta interfaz, Spring Security
+ * representa el usuario de la BD, además permite agregar los permisos que este usuario pueda tener.
+ */
 @Data
 @Builder
 @NoArgsConstructor @AllArgsConstructor
@@ -34,6 +39,10 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    /**
+     * Permite definir los permisos que el usuario debe tener
+     * @return una lista de permisos + el rol del usuario
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
        return List.of(new SimpleGrantedAuthority(role.name()));
