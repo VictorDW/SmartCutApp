@@ -6,15 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import io.jsonwebtoken.Claims;
+import com.springsecurity.practica.errores.ErrorValidationTokenException;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.springsecurity.practica.User.User;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -124,13 +124,20 @@ public class JwtService {
      * @param token
      * @return la instancia de Claims, el cual contiene todos los agregados en la creación del token
      */
-    private Claims getallClaims(String token) {
-        return Jwts
+    private Claims getallClaims(String token)  {
+        try  {
+            return Jwts
                 .parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        }catch (ExpiredJwtException | MalformedJwtException | SignatureException e) {
+            //Se capturan las excepciones propies de Jwts y se crea una personalizada al momento que se lanzan
+            throw new ErrorValidationTokenException("TOKEN INVALIDO O HA EXPIRADO!");
+        }
+
     }
 
     /**
