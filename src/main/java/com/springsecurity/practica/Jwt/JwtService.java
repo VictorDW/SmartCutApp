@@ -135,7 +135,7 @@ public class JwtService {
 
         }catch (ExpiredJwtException | MalformedJwtException | SignatureException e) {
             //Se capturan las excepciones propies de Jwts y se crea una personalizada al momento que se lanzan
-            throw new ErrorValidationTokenException("TOKEN INVALIDO O HA EXPIRADO!");
+            throw new ErrorValidationTokenException("TOKEN INVALIDO O EXPIRADO!");
         }
 
     }

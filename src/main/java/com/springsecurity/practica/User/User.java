@@ -2,6 +2,7 @@ package com.springsecurity.practica.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,7 +46,16 @@ public class User implements UserDetails{
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       return List.of(new SimpleGrantedAuthority(role.name()));
+
+         List<GrantedAuthority> listPermission =
+             role.getAllPermissions()
+                 .stream()
+                 .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                 .collect(Collectors.toList());
+
+         listPermission.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
+
+       return listPermission;
     }
     @Override
     public boolean isAccountNonExpired() {

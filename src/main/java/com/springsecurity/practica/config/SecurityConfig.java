@@ -1,6 +1,7 @@
 package com.springsecurity.practica.config;
 
 import com.springsecurity.practica.Jwt.JwtAuthenticationFilter;
+import com.springsecurity.practica.User.Permission;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -48,6 +49,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authRequestConfig -> {
                 authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll();
                 authRequestConfig.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
+                authRequestConfig.requestMatchers(HttpMethod.POST, "/api/v1/person").hasAuthority(Permission.CREATE_ONE_PERSON.name());
+                authRequestConfig.requestMatchers(HttpMethod.GET, "/api/v1/person").hasAuthority(Permission.READ_ALL_PERSON.name());
                 authRequestConfig.anyRequest().authenticated();
             })
             /*

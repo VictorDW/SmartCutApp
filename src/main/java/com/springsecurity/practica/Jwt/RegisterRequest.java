@@ -1,5 +1,6 @@
 package com.springsecurity.practica.Jwt;
 
+import com.springsecurity.practica.User.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class RegisterRequest {
     private String firstName;
     private String lastName;
     private String country;
+    private Role role;
 }
