@@ -1,4 +1,4 @@
-package com.springsecurity.practica.Person;
+package com.springsecurity.practica.Person.Entity;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;

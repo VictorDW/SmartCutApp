@@ -1,5 +1,6 @@
-package com.springsecurity.practica.Person;
+package com.springsecurity.practica.Person.Repository;
 
+import com.springsecurity.practica.Person.Entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.springsecurity.practica.Jwt;
+package com.springsecurity.practica.Auth.DTO;
 
 import com.springsecurity.practica.User.Role;
 import lombok.AllArgsConstructor;

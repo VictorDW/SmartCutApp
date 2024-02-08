@@ -1,9 +1,10 @@
-package com.springsecurity.practica.User;
+package com.springsecurity.practica.User.Entity;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springsecurity.practica.User.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

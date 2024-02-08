@@ -1,20 +1,18 @@
-package com.springsecurity.practica.Auth;
+package com.springsecurity.practica.Auth.Service;
 
+import com.springsecurity.practica.Auth.DTO.LoginRequest;
+import com.springsecurity.practica.Auth.DTO.RegisterRequest;
 import com.springsecurity.practica.Jwt.JwtService;
-import com.springsecurity.practica.User.Role;
-import com.springsecurity.practica.User.User;
-import com.springsecurity.practica.User.UserRepository;
+import com.springsecurity.practica.User.Entity.User;
+import com.springsecurity.practica.User.Repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.springsecurity.practica.Jwt.AuthResponse;
-import com.springsecurity.practica.Jwt.LoginRequest;
-import com.springsecurity.practica.Jwt.RegisterRequest;
+import com.springsecurity.practica.Jwt.DTO.AuthResponse;
 
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

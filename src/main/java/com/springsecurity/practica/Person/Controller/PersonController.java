@@ -1,4 +1,4 @@
-package com.springsecurity.practica.Person;
+package com.springsecurity.practica.Person.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

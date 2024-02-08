@@ -1,4 +1,4 @@
-package com.springsecurity.practica.Jwt;
+package com.springsecurity.practica.Auth.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class AuthResponse {
+public class LoginRequest {
 
-    private String token;
+    private String userName;
+    private String password;
 }
