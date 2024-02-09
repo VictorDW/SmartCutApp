@@ -1,6 +1,13 @@
 package com.springsecurity.practica.User;
 
 public enum Permission {
+  REGISTER_ONE_USER,
+  READ_ONE_USER,
+  READ_ALL_USER,
+  UPDATE_USER,
+  DISABLE_USER,
+  ENABLE_USER,
+  DELETE_USER,
   CREATE_SUPPLIER,
   READ_ALL_SUPPLIER,
   READ_ONE_SUPPLIER,

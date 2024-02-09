@@ -2,6 +2,8 @@ package com.springsecurity.practica.User.Mapper;
 
 import com.springsecurity.practica.Auth.DTO.RegisterRequest;
 import com.springsecurity.practica.Domain.Status;
+import com.springsecurity.practica.User.DTO.UserResponse;
+import com.springsecurity.practica.User.DTO.UserResponseBasic;
 import com.springsecurity.practica.User.Entity.User;
 import com.springsecurity.practica.User.Role;
 
@@ -27,5 +29,31 @@ public class MapperUser {
         user.setRole(request.getRole());
 
         return user;
+    }
+
+    public static UserResponseBasic mapperUserToUserResponseBasic(User user) {
+        return new UserResponseBasic(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getRole()
+        );
+    }
+
+    public static UserResponse mapperUserToUserResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getRole(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getCedula(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress(),
+                user.getDateRegister(),
+                user.getStatus()
+        );
     }
 }

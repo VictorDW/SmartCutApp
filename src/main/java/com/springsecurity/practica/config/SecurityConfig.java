@@ -67,20 +67,20 @@ public class SecurityConfig {
        final String SUPPLIER = "/api/supplier";
        final String MATERIALS = "/api/materials";
 
+
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+               .requestMatchers(HttpMethod.GET, "/api/user").hasAuthority(Permission.READ_ALL_USER.name())
                 .requestMatchers(HttpMethod.POST, SUPPLIER).hasAuthority(Permission.CREATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER).hasAuthority(Permission.UPDATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
-
                 .requestMatchers(HttpMethod.POST, MATERIALS).hasAuthority(Permission.CREATE_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS).hasAuthority(Permission.READ_ALL_MATERIALS.name())
-               .requestMatchers(HttpMethod.GET, MATERIALS+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
-               .requestMatchers(HttpMethod.PUT, MATERIALS).hasAuthority(Permission.UPDATE_MATERIALS.name())
-               .requestMatchers(HttpMethod.PUT, MATERIALS+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
-
+                .requestMatchers(HttpMethod.GET, MATERIALS+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
+                .requestMatchers(HttpMethod.PUT, MATERIALS).hasAuthority(Permission.UPDATE_MATERIALS.name())
+                .requestMatchers(HttpMethod.PUT, MATERIALS+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
                 .anyRequest().authenticated();
     }
 }

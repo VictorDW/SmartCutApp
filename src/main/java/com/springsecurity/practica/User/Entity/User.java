@@ -69,6 +69,7 @@ public class User extends Person implements UserDetails{
     }
     @Override
     public boolean isEnabled() {
+        //return !this.role.equals(Role.USER);
         return true;
     }
 
