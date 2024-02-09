@@ -1,6 +1,6 @@
-package com.springsecurity.practica.Person.Repository;
+package com.springsecurity.practica.Domain.Person.Repository;
 
-import com.springsecurity.practica.Person.Entity.Person;
+import com.springsecurity.practica.Domain.Person.Entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

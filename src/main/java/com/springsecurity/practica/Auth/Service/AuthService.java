@@ -3,7 +3,7 @@ package com.springsecurity.practica.Auth.Service;
 import com.springsecurity.practica.Auth.DTO.LoginRequest;
 import com.springsecurity.practica.Auth.DTO.RegisterRequest;
 import com.springsecurity.practica.Jwt.JwtService;
-import com.springsecurity.practica.User.Entity.User;
+import com.springsecurity.practica.User.Mapper.MapperUser;
 import com.springsecurity.practica.User.Repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,7 @@ public class AuthService {
         * esta implementación es fundamental para la autenticación, ya que permite almacenar los datos del usuario
         * sin autenticar, para posteriormente contener el usuario ya autenticado
         */
-        var usernameAuthentication = new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword());
+        var usernameAuthentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
         /*
         * internamente en el método authenticate, se valida que el usuario si exista en la base de datos, luego
@@ -65,15 +65,8 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
 
-        User user = User.builder()
-                    .username(request.getUserName())
-                    .password(encodePassword(request.getPassword()))
-                    .firstName(request.getFirstName())
-                    .lastName(request.getLastName())
-                    .country(request.getCountry())
-                    .role(request.getRole())
-                    .build();
-
+        String credencial = encodePassword(request.getPassword());
+        var user = MapperUser.mapperRegisterRequestToUser(request, credencial);
         userRepository.save(user);
 
         return AuthResponse.builder()

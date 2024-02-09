@@ -46,18 +46,11 @@ public class SecurityConfig {
                 sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(authRequestConfig -> {
-                authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll();
-                authRequestConfig.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
-                authRequestConfig.requestMatchers(HttpMethod.POST, "/api/v1/person").hasAuthority(Permission.CREATE_ONE_PERSON.name());
-                authRequestConfig.requestMatchers(HttpMethod.GET, "/api/v1/person").hasAuthority(Permission.READ_ALL_PERSON.name());
-                authRequestConfig.anyRequest().authenticated();
-            })
             /*
             * con una expresión de método de referencia podemos llamar al método,
             * es equivalente a realizar la lambda, authRequestConfig -> httpRequestPath(authRequestConfig)
             */
-            //.authorizeHttpRequests(this::httpRequestPath)
+            .authorizeHttpRequests(this::httpRequestPath)
             .build();
     }
 
@@ -69,10 +62,25 @@ public class SecurityConfig {
      * que esté correcto.
      * @param authRequestConfig
      */
-  /*  private void httpRequestPath(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequestConfig) {
-        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll();
-        authRequestConfig.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
-        authRequestConfig.anyRequest().authenticated();
+   private void httpRequestPath(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequestConfig) {
+
+       final String SUPPLIER = "/api/supplier";
+       final String MATERIALS = "/api/materials";
+
+       authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, SUPPLIER).hasAuthority(Permission.CREATE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.GET, SUPPLIER).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
+                .requestMatchers(HttpMethod.GET, SUPPLIER+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.PUT, SUPPLIER).hasAuthority(Permission.UPDATE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.PUT, SUPPLIER+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
+
+                .requestMatchers(HttpMethod.POST, MATERIALS).hasAuthority(Permission.CREATE_MATERIALS.name())
+                .requestMatchers(HttpMethod.GET, MATERIALS).hasAuthority(Permission.READ_ALL_MATERIALS.name())
+               .requestMatchers(HttpMethod.GET, MATERIALS+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
+               .requestMatchers(HttpMethod.PUT, MATERIALS).hasAuthority(Permission.UPDATE_MATERIALS.name())
+               .requestMatchers(HttpMethod.PUT, MATERIALS+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
+
+                .anyRequest().authenticated();
     }
-   */
 }

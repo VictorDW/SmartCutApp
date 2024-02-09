@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springsecurity.practica.Domain.Person.Entity.Person;
 import com.springsecurity.practica.User.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,23 +22,19 @@ import lombok.NoArgsConstructor;
  * representa el usuario de la BD, además permite agregar los permisos que este usuario pueda tener.
  */
 @Data
-@Builder
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 //uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})} permite especificar que el unico campo que no se puede repetir es el username
 @Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class User implements UserDetails{
+@PrimaryKeyJoinColumn(name = "user_id")
+public class User extends Person implements UserDetails{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String password;
-    private String firstName;
-    private String lastName;
-    private String country;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
