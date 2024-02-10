@@ -69,7 +69,7 @@ public class SecurityConfig {
 
 
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/register").hasAuthority(Permission.REGISTER_ONE_USER.name())
                .requestMatchers(HttpMethod.GET, "/api/user").hasAuthority(Permission.READ_ALL_USER.name())
                 .requestMatchers(HttpMethod.POST, SUPPLIER).hasAuthority(Permission.CREATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
