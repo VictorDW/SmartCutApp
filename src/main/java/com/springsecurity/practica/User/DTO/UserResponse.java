@@ -9,7 +9,6 @@ public record UserResponse(
 
         Long id,
         String username,
-        String password,
         Role role,
         String firstName,
         String LastName,

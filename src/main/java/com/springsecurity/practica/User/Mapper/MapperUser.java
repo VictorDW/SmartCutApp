@@ -44,7 +44,6 @@ public class MapperUser {
         return new UserResponse(
                 user.getId(),
                 user.getUsername(),
-                user.getPassword(),
                 user.getRole(),
                 user.getFirstName(),
                 user.getLastName(),

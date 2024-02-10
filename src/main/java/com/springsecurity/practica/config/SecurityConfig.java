@@ -64,23 +64,24 @@ public class SecurityConfig {
      */
    private void httpRequestPath(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequestConfig) {
 
-       final String SUPPLIER = "/api/supplier";
-       final String MATERIALS = "/api/materials";
+       final String SUPPLIER_PATH = "/api/supplier";
+       final String MATERIALS_PATH = "/api/materials";
+       final String USER_PATH = "/api/user";
 
 
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").hasAuthority(Permission.REGISTER_ONE_USER.name())
-               .requestMatchers(HttpMethod.GET, "/api/user").hasAuthority(Permission.READ_ALL_USER.name())
-                .requestMatchers(HttpMethod.POST, SUPPLIER).hasAuthority(Permission.CREATE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.GET, SUPPLIER).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
-                .requestMatchers(HttpMethod.GET, SUPPLIER+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.PUT, SUPPLIER).hasAuthority(Permission.UPDATE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.PUT, SUPPLIER+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.POST, MATERIALS).hasAuthority(Permission.CREATE_MATERIALS.name())
-                .requestMatchers(HttpMethod.GET, MATERIALS).hasAuthority(Permission.READ_ALL_MATERIALS.name())
-                .requestMatchers(HttpMethod.GET, MATERIALS+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
-                .requestMatchers(HttpMethod.PUT, MATERIALS).hasAuthority(Permission.UPDATE_MATERIALS.name())
-                .requestMatchers(HttpMethod.PUT, MATERIALS+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
+               .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(Permission.READ_ALL_USER.name())
+                .requestMatchers(HttpMethod.POST, SUPPLIER_PATH).hasAuthority(Permission.CREATE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.GET, SUPPLIER_PATH).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
+                .requestMatchers(HttpMethod.GET, SUPPLIER_PATH+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH).hasAuthority(Permission.UPDATE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.POST, MATERIALS_PATH).hasAuthority(Permission.CREATE_MATERIALS.name())
+                .requestMatchers(HttpMethod.GET, MATERIALS_PATH).hasAuthority(Permission.READ_ALL_MATERIALS.name())
+                .requestMatchers(HttpMethod.GET, MATERIALS_PATH+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
+                .requestMatchers(HttpMethod.PUT, MATERIALS_PATH).hasAuthority(Permission.UPDATE_MATERIALS.name())
+                .requestMatchers(HttpMethod.PUT, MATERIALS_PATH+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
                 .anyRequest().authenticated();
     }
 }
