@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.http.HttpHeaders;
 import java.util.Objects;
 
+import com.springsecurity.practica.User.Entity.User;
+import com.springsecurity.practica.User.Service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +85,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 //Se setea el usuario autenticado y autorizado en el SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(usernameAuthentication);
+                //seteamos el usuario autenticado a la clase service de usuario.
+                UserServiceImpl.authenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
                 /* Ejemplo de como optener los detalles
                 var details = (WebAuthenticationDetails) usernameAuthentication.getDetails();
