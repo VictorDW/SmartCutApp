@@ -38,7 +38,8 @@ public class SupplierServiceImpl implements ISupplierService {
     }
 
     /**
-     * Obtiene un proveedor utilizando su ID y lanza una excepción si no se encuentra.
+     * Obtiene un proveedor utilizando su ID y lanza una excepción si no se encuentra, este método es usado
+     * por MaterialServiceImpl para agregar ó modificar el proveedor al material.
      *
      * @param id El ID que identifica al proveedor a buscar en la base de datos.
      * @return El proveedor encontrado con el ID especificado.
@@ -46,9 +47,8 @@ public class SupplierServiceImpl implements ISupplierService {
      */
 
     @Override
-    public Supplier getSupplierById(Long id) {
-
-        return supplierRepository.findByIdAndStatusNot(id, Status.INACTIVE)
+    public Supplier getSupplier(Long id) {
+        return supplierRepository.findBySupplierId(id)
                 .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
     }
 
@@ -60,7 +60,7 @@ public class SupplierServiceImpl implements ISupplierService {
      */
     private void hasSupplier(String cedula) throws RuntimeException {
 
-        var supplier = supplierRepository.findByCedulaAndStatusNot(cedula, Status.ACTIVE);
+        var supplier = supplierRepository.findByCedula(cedula);
 
         if(supplier.isPresent())
             throw new RuntimeException("Proveedor con cedula "+ supplier.get().getCedula() +" ya se encuentra registrado");
@@ -76,7 +76,7 @@ public class SupplierServiceImpl implements ISupplierService {
     @Override
     public SupplierResponse getById(Long id) {
 
-        return supplierRepository.findByIdAndStatusNot(id, Status.INACTIVE)
+        return supplierRepository.findBySupplierId(id)
                 .map(MapperSupplier::mapperSuppliertToSupplierResponse)
                 .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
     }
@@ -88,7 +88,7 @@ public class SupplierServiceImpl implements ISupplierService {
      */
     @Override
     public List<SupplierResponse> getAll() {
-        return supplierRepository.findAllByStatusNot(Status.INACTIVE)
+        return supplierRepository.findAllSupplier()
                 .stream().map(MapperSupplier::mapperSuppliertToSupplierResponse)
                 .toList();
     }
@@ -103,12 +103,12 @@ public class SupplierServiceImpl implements ISupplierService {
     @Override
     public SupplierResponse update(SupplierUpdate update) {
 
-        return supplierRepository.findByIdAndStatusNot(update.id(), Status.INACTIVE)
+        return supplierRepository.findBySupplierId(update.id())
                 .map(supplier -> {
-                    var suppierUpdate = supplierRepository.save(
+                    var supplierUpdate = supplierRepository.save(
                             MapperSupplier.mapperSupplierUpdate(supplier, update)
                     );
-                    return  MapperSupplier.mapperSuppliertToSupplierResponse(suppierUpdate);
+                    return  MapperSupplier.mapperSuppliertToSupplierResponse(supplierUpdate);
                 })
                 .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
     }
@@ -120,21 +120,12 @@ public class SupplierServiceImpl implements ISupplierService {
      * @throws RuntimeException si no se encuentra ningún proveedor con la cédula proporcionada.
      */
     @Override
-    public void delete(String cedula) throws RuntimeException {
-        supplierRepository.findByCedulaAndStatusNot(cedula, Status.INACTIVE).ifPresentOrElse(
+    public void delete(Long id) throws RuntimeException {
+        supplierRepository.findBySupplierId(id).ifPresentOrElse(
                 supplier -> {
                     supplierRepository.save(
                             MapperSupplier.mapperSupplierDelete(supplier)
                     );
-              /*
-              * Pone en estado inactivo los materiales que tenga el proveedor
-
-              supplier.getMaterials().forEach(
-                           materials -> iMaterialsDAO.save(
-                                   MapperMaterials.mapperMaterialsDelete(materials)
-                           )
-                   );
-               */
                 }
                 ,()-> {throw new RuntimeException("Proveedor no encontrado");});
     }

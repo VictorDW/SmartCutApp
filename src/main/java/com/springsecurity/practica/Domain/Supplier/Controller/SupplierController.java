@@ -71,19 +71,27 @@ public class SupplierController {
         return ResponseEntity.ok(supplierService.update(update));
     }
 
-    /**
-     * Inactiva un proveedor utilizando su número de cédula y devuelve una respuesta HTTP sin contenido (204) si la desactivación fue exitosa.
-     *
-     * @param cedula El número de cédula del proveedor a inactivar.
-     * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
-     */
-    @PutMapping("/{cedula}")
+
+   /* @PutMapping("/{cedula}")
     public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable
                                                       @Pattern(regexp = "^\\d]+$", message = "Solo debe contener solo numeros")
                                                       @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
                                                       String cedula) {
 
         supplierService.delete(cedula);
+        return ResponseEntity.noContent().build();
+    }
+
+    */
+
+    /**
+     * Inactiva un proveedor utilizando su id y devuelve una respuesta HTTP sin contenido (204) si la desactivación fue exitosa.
+     * @param id El id del proveedor a inactivar.
+     * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+        supplierService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

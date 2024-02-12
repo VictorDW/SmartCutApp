@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface ISupplierService {
     SupplierResponse create(SupplierRequest request);
-    Supplier getSupplierById(Long id);
+    Supplier getSupplier(Long id);
     SupplierResponse getById(Long id);
     List<SupplierResponse> getAll();
     SupplierResponse update(SupplierUpdate update);
-    void delete(String cedula);
+    void delete(Long id);
 }

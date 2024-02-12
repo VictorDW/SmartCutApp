@@ -30,7 +30,7 @@ public class MaterialsServiceImple implements IMaterialsService {
     @Override
     public MaterialsResponse create(MaterialsRequest request) {
 
-        var supplier = supplierService.getSupplierById(request.IDSupplier());
+        var supplier = supplierService.getSupplier(request.IDSupplier());
 
         return MapperMaterials.mapperMaterialsToMaterialsResponse(
                 materialsRepository.save(
@@ -77,7 +77,7 @@ public class MaterialsServiceImple implements IMaterialsService {
     @Override
     public MaterialsResponse update(MaterialsUpdate update) {
 
-        var supplier = supplierService.getSupplierById(update.IDSupplier());
+        var supplier = supplierService.getSupplier(update.IDSupplier());
 
         return materialsRepository.findByIdAndStatusNot(update.id(), Status.INACTIVE)
                 .map(material -> {
