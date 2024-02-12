@@ -30,7 +30,7 @@ public class AuthService {
     /**
      * Este método permite autenticar un usuario registrado en la base de datos
      * @param request
-     * @return el token generado con los datos del usuario autenticado
+     * @return el token generado con los datos del usuario autenticado + datos basico de este
      */
     public AuthResponse login(LoginRequest request) {
 
@@ -58,17 +58,12 @@ public class AuthService {
     /**
      * Método que permite registrar un usuario a la base de datos
      * @param request
-     * @return el token generado a partir del usuario registrado
      */
     @Transactional
-    public AuthResponse register(RegisterRequest request) {
+    public void register(RegisterRequest request) {
 
         var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);
-
-        return AuthResponse.builder()
-                    .token(jwtService.getToken(user))
-                    .build();
     }
 
 

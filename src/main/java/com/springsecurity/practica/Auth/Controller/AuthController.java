@@ -3,6 +3,7 @@ package com.springsecurity.practica.Auth.Controller;
 import com.springsecurity.practica.Auth.Service.AuthService;
 import com.springsecurity.practica.Auth.DTO.LoginRequest;
 import com.springsecurity.practica.Auth.DTO.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,12 +25,13 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){
-        return ResponseEntity.ok(authService.login(request));
+        return new ResponseEntity<>(authService.login(request), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request){
+        authService.register(request);
+        return new ResponseEntity<>("Registration Made", HttpStatus.CREATED);
     }
     
 }
