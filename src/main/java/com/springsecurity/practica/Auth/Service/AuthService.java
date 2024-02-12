@@ -3,6 +3,7 @@ package com.springsecurity.practica.Auth.Service;
 import com.springsecurity.practica.Auth.DTO.LoginRequest;
 import com.springsecurity.practica.Auth.DTO.RegisterRequest;
 import com.springsecurity.practica.Jwt.JwtService;
+import com.springsecurity.practica.User.Entity.User;
 import com.springsecurity.practica.User.Mapper.MapperUser;
 import com.springsecurity.practica.User.Repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,13 +49,10 @@ public class AuthService {
         */
         Authentication userAuthenticated = authenticationManager.authenticate(usernameAuthentication);
 
-        return AuthResponse.builder()
-                .token(
-                    jwtService.getToken(
-                        (UserDetails) userAuthenticated.getPrincipal()
-                    )
-                )
-                .build();
+       return MapperUser.mapperUserAndTokenToAuthResponse(
+                    (User) userAuthenticated.getPrincipal(),
+                    jwtService.getToken((UserDetails) userAuthenticated.getPrincipal())
+       );
     }
 
     /**

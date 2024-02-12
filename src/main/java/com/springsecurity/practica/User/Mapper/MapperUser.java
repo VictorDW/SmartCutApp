@@ -2,11 +2,10 @@ package com.springsecurity.practica.User.Mapper;
 
 import com.springsecurity.practica.Auth.DTO.RegisterRequest;
 import com.springsecurity.practica.Domain.Status;
+import com.springsecurity.practica.Jwt.DTO.AuthResponse;
 import com.springsecurity.practica.User.DTO.UserResponse;
-import com.springsecurity.practica.User.DTO.UserResponseBasic;
 import com.springsecurity.practica.User.DTO.UserUpdate;
 import com.springsecurity.practica.User.Entity.User;
-import com.springsecurity.practica.User.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -35,13 +34,14 @@ public class MapperUser {
         return user;
     }
 
-    public static UserResponseBasic mapperUserToUserResponseBasic(User user) {
-        return new UserResponseBasic(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getRole()
-        );
+    public static AuthResponse mapperUserAndTokenToAuthResponse(User user, String token) {
+        return AuthResponse.builder()
+            .id(user.getId())
+            .firstName(user.getFirstName())
+            .lastName(user.getLastName())
+            .role(user.getRole())
+            .token(token)
+            .build();
     }
 
     public static UserResponse mapperUserToUserResponse(User user) {
