@@ -6,8 +6,11 @@ import com.springsecurity.practica.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.practica.Domain.Materials.Service.IMaterialsService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,22 +29,25 @@ public class MaterialsController {
      * Crea nuevos materiales utilizando la información proporcionada en el cuerpo de la solicitud y devuelve una respuesta HTTP con la información de los materiales creados.
      *
      * @param materialsRequest El objeto MaterialsRequest que contiene la información de los materiales a crear.
-     * @return ResponseEntity con la información de los materiales creados y un código de estado HTTP 200 (OK) si la creación fue exitosa.
+     * @return ResponseEntity con la información de los materiales creados y un código de estado HTTP 201 (Created) si la creación fue exitosa.
      */
     @PostMapping
     public ResponseEntity<MaterialsResponse> createMaterials(@RequestBody @Valid MaterialsRequest materialsRequest) {
-        return ResponseEntity.ok(materialsService.create(materialsRequest));
+        return new ResponseEntity<>(materialsService.create(materialsRequest), HttpStatus.CREATED);
     }
 
     /**
-     * Obtiene un material por su ID y devuelve una respuesta HTTP con la información del material.
+     * Obtiene una serie de materiales a partir de su codigo y devuelve una respuesta HTTP.
      *
-     * @param id El ID del material a buscar.
-     * @return ResponseEntity con la información del material y un código de estado HTTP 200 (OK) si se encuentra el material.
+     * @param code El codigo del material a buscar.
+     * @return una ResponseEntity con la información de los materiales y un código de estado HTTP 200 (OK).
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<MaterialsResponse> getByIdMaterials(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
-        return ResponseEntity.ok(materialsService.getById(id));
+    @GetMapping("/{code}")
+    public ResponseEntity<List<MaterialsResponse>> getByIdMaterials(@PathVariable
+                                                              @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
+                                                              @Size(min = 4, max = 4, message = "Debe contener 4 digitos")
+                                                              String code) {
+        return ResponseEntity.ok(materialsService.getMaterialsByCode(code));
     }
 
     /**

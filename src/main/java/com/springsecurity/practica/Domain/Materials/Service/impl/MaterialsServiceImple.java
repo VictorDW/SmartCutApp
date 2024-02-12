@@ -6,7 +6,6 @@ import com.springsecurity.practica.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.practica.Domain.Materials.Mapper.MapperMaterials;
 import com.springsecurity.practica.Domain.Materials.Repository.MaterialsRepository;
 import com.springsecurity.practica.Domain.Materials.Service.IMaterialsService;
-import com.springsecurity.practica.Domain.Status;
 import com.springsecurity.practica.Domain.Supplier.Service.ISupplierService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,18 +39,22 @@ public class MaterialsServiceImple implements IMaterialsService {
     }
 
     /**
-     * Obtiene un material utilizando su ID y devuelve un objeto MaterialsResponse si se encuentra.
+     * Obtiene uno o varios mateirales por su codigo y devuelve una lista de MaterialsResponse si se encuentra.
      *
-     * @param id El ID que identifica al material a buscar en la base de datos.
-     * @return Un objeto MaterialsResponse que representa el material encontrado con el ID especificado.
-     * @throws RuntimeException si no se encuentra ningún material con el ID proporcionado.
+     * @param code identifica a los materiales a buscar en la base de datos.
+     * @return Una lista de MaterialsResponse que representa los materiales encontrados con el mismo codigoo.
+     * @throws RuntimeException si no se encuentra ningún material con el codigo proporcionado.
      */
     @Override
-    public MaterialsResponse getById(Long id) {
+    public List<MaterialsResponse> getMaterialsByCode(String code) {
 
-        return materialsRepository.findByIdAndStatusNot(id, Status.INACTIVE)
-                .map(MapperMaterials::mapperMaterialsToMaterialsResponse)
-                .orElseThrow(()-> new RuntimeException("Material no encontrado"));
+        return materialsRepository.findMaterialsByCode(code)
+            .map(materials ->
+                materials.stream()
+                    .map(MapperMaterials::mapperMaterialsToMaterialsResponse)
+                    .toList())
+            .orElseThrow(() -> new RuntimeException("Material no encontrado"));
+
     }
 
     /**
@@ -62,7 +65,7 @@ public class MaterialsServiceImple implements IMaterialsService {
     @Override
     public List<MaterialsResponse> getAll() {
 
-        return materialsRepository.findAllByStatusNot(Status.INACTIVE).stream()
+        return materialsRepository.findAllMaterials().stream()
                 .map(MapperMaterials::mapperMaterialsToMaterialsResponse)
                 .toList();
     }
@@ -79,7 +82,7 @@ public class MaterialsServiceImple implements IMaterialsService {
 
         var supplier = supplierService.getSupplier(update.IDSupplier());
 
-        return materialsRepository.findByIdAndStatusNot(update.id(), Status.INACTIVE)
+        return materialsRepository.findMaterialById(update.id())
                 .map(material -> {
                     var materialUpdate = materialsRepository.save(
                                 MapperMaterials.mapperMaterialsUpdate(
@@ -105,7 +108,7 @@ public class MaterialsServiceImple implements IMaterialsService {
     @Override
     public void delete(Long id)  throws RuntimeException {
 
-        materialsRepository.findByIdAndStatusNot(id, Status.INACTIVE)
+        materialsRepository.findMaterialById(id)
           .ifPresentOrElse(
                 materials ->
                   materialsRepository.save(MapperMaterials.mapperMaterialsDelete(materials))

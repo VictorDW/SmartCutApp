@@ -48,13 +48,12 @@ public class SupplierController {
      */
     @GetMapping("/{cedula}")
     public ResponseEntity<SupplierResponse> getSupplierByCedula(@PathVariable
-                                                      @Pattern(regexp = "^\\d]+$", message = "Solo debe contener solo numeros")
+                                                      @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
                                                       @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
                                                       String cedula) {
 
         return ResponseEntity.ok(supplierService.getSupplierByCedula(cedula));
     }
-
 
     /**
      * Obtiene todos los proveedores y devuelve una respuesta HTTP con una lista que contiene la información de cada proveedor.

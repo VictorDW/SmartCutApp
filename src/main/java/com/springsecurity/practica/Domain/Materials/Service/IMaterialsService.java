@@ -9,7 +9,7 @@ import java.util.List;
 public interface IMaterialsService{
 
     MaterialsResponse create(MaterialsRequest request);
-    MaterialsResponse getById(Long id);
+    List<MaterialsResponse> getMaterialsByCode(String code);
     List<MaterialsResponse> getAll();
     MaterialsResponse update(MaterialsUpdate update);
     void delete(Long id);
