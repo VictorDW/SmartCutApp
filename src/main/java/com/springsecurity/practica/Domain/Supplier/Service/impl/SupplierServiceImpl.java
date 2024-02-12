@@ -1,6 +1,5 @@
 package com.springsecurity.practica.Domain.Supplier.Service.impl;
 
-import com.springsecurity.practica.Domain.Status;
 import com.springsecurity.practica.Domain.Supplier.DTO.SupplierRequest;
 import com.springsecurity.practica.Domain.Supplier.DTO.SupplierResponse;
 import com.springsecurity.practica.Domain.Supplier.DTO.SupplierUpdate;
@@ -67,18 +66,18 @@ public class SupplierServiceImpl implements ISupplierService {
     }
 
     /**
-     * Obtiene un proveedor utilizando su ID y devuelve un objeto de tipo SupplierResponse si se encuentra.
+     * Obtiene un proveedor utilizando su cedula y devuelve un objeto de tipo SupplierResponse si se encuentra.
      *
-     * @param id El ID que identifica al proveedor a buscar en la base de datos.
+     * @param cedula identifica al proveedor a buscar en la base de datos.
      * @return Un objeto SupplierResponse que representa el proveedor encontrado con el ID especificado.
      * @throws RuntimeException si no se encuentra ningún proveedor con el ID proporcionado.
      */
     @Override
-    public SupplierResponse getById(Long id) {
+    public SupplierResponse getSupplierByCedula(String cedula) {
 
-        return supplierRepository.findBySupplierId(id)
-                .map(MapperSupplier::mapperSuppliertToSupplierResponse)
-                .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
+        return supplierRepository.findByCedula(cedula)
+            .map(MapperSupplier::mapperSuppliertToSupplierResponse)
+            .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
     }
 
     /**

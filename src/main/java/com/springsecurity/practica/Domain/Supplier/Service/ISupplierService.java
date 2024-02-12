@@ -10,7 +10,7 @@ import java.util.List;
 public interface ISupplierService {
     SupplierResponse create(SupplierRequest request);
     Supplier getSupplier(Long id);
-    SupplierResponse getById(Long id);
+    SupplierResponse getSupplierByCedula(String cedula);
     List<SupplierResponse> getAll();
     SupplierResponse update(SupplierUpdate update);
     void delete(Long id);

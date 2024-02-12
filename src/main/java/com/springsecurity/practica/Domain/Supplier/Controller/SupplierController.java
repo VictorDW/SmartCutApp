@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,24 +32,29 @@ public class SupplierController {
      * Crea un nuevo proveedor utilizando la información proporcionada en el cuerpo de la solicitud y devuelve una respuesta HTTP con la información del proveedor creado.
      *
      * @param request El objeto SupplierRequest que contiene la información del proveedor a crear.
-     * @return ResponseEntity con la información del proveedor creado y un código de estado HTTP 200 (OK) si la creación fue exitosa.
+     * @return ResponseEntity con la información del proveedor creado y un código de estado HTTP 201 (Created) si la creación fue exitosa.
      */
     @PostMapping
     public ResponseEntity<SupplierResponse> createSupplier(@RequestBody SupplierRequest request) {
 
-        return ResponseEntity.ok(supplierService.create(request));
+        return new ResponseEntity<>(supplierService.create(request), HttpStatus.CREATED);
     }
 
     /**
-     * Obtiene un proveedor por su ID y devuelve una respuesta HTTP con la información del proveedor.
+     * Obtiene un proveedor por su numero de cedula y devuelve una respuesta HTTP con la información del proveedor.
      *
-     * @param id El ID del proveedor a buscar.
+     * @param cedula del proveedor a buscar.
      * @return ResponseEntity con la información del proveedor y un código de estado HTTP 200 (OK) si se encuentra el proveedor.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<SupplierResponse> getByIdSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
-        return ResponseEntity.ok(supplierService.getById(id));
+    @GetMapping("/{cedula}")
+    public ResponseEntity<SupplierResponse> getSupplierByCedula(@PathVariable
+                                                      @Pattern(regexp = "^\\d]+$", message = "Solo debe contener solo numeros")
+                                                      @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
+                                                      String cedula) {
+
+        return ResponseEntity.ok(supplierService.getSupplierByCedula(cedula));
     }
+
 
     /**
      * Obtiene todos los proveedores y devuelve una respuesta HTTP con una lista que contiene la información de cada proveedor.
@@ -71,19 +77,6 @@ public class SupplierController {
         return ResponseEntity.ok(supplierService.update(update));
     }
 
-
-   /* @PutMapping("/{cedula}")
-    public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable
-                                                      @Pattern(regexp = "^\\d]+$", message = "Solo debe contener solo numeros")
-                                                      @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
-                                                      String cedula) {
-
-        supplierService.delete(cedula);
-        return ResponseEntity.noContent().build();
-    }
-
-    */
-
     /**
      * Inactiva un proveedor utilizando su id y devuelve una respuesta HTTP sin contenido (204) si la desactivación fue exitosa.
      * @param id El id del proveedor a inactivar.
@@ -92,7 +85,7 @@ public class SupplierController {
     @PutMapping("/{id}")
     public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
         supplierService.delete(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }
