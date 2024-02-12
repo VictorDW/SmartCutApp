@@ -85,8 +85,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 //Se setea el usuario autenticado y autorizado en el SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(usernameAuthentication);
-                //seteamos el usuario autenticado a la clase service de usuario.
-                UserServiceImpl.authenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
                 /* Ejemplo de como optener los detalles
                 var details = (WebAuthenticationDetails) usernameAuthentication.getDetails();

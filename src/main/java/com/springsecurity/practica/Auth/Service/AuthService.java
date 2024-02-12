@@ -65,8 +65,7 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
 
-        String credencial = encodePassword(request.getPassword());
-        var user = MapperUser.mapperRegisterRequestToUser(request, credencial);
+        var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);
 
         return AuthResponse.builder()
@@ -74,12 +73,5 @@ public class AuthService {
                     .build();
     }
 
-    /**
-     * Permite codificar la contraseña pasada por el parámetro
-     * @param password
-     * @return la contraseña hasheada
-     */
-    private String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
+
 }
