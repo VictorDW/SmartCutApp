@@ -71,12 +71,18 @@ public class SecurityConfig {
 
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").hasAuthority(Permission.REGISTER_ONE_USER.name())
-               .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(Permission.READ_ALL_USER.name())
+                .requestMatchers(HttpMethod.GET, USER_PATH+"/verify/").hasAuthority(Permission.REGISTER_ONE_USER.name())
+                .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(Permission.READ_ALL_USER.name())
+                .requestMatchers(HttpMethod.GET, USER_PATH+"/").hasAuthority(Permission.READ_ONE_USER.name())
+                .requestMatchers(HttpMethod.PUT, USER_PATH).hasAuthority(Permission.UPDATE_USER.name())
+                .requestMatchers(HttpMethod.PUT, USER_PATH+"/").hasAuthority(Permission.CHANGE_USER_STATUS.name())
+
                 .requestMatchers(HttpMethod.POST, SUPPLIER_PATH).hasAuthority(Permission.CREATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER_PATH).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER_PATH+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH).hasAuthority(Permission.UPDATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
+
                 .requestMatchers(HttpMethod.POST, MATERIALS_PATH).hasAuthority(Permission.CREATE_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS_PATH).hasAuthority(Permission.READ_ALL_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS_PATH+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
