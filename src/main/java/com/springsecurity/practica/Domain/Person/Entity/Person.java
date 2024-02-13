@@ -3,7 +3,6 @@ package com.springsecurity.practica.Domain.Person.Entity;
 import com.springsecurity.practica.Domain.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

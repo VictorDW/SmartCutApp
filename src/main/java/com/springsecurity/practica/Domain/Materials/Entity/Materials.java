@@ -26,6 +26,7 @@ public class Materials {
     private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
     @Column(nullable = false)
@@ -40,7 +41,7 @@ public class Materials {
     @Column(nullable = false)
     private Float height;
 
-    @Column(name = "unit_price", nullable = false)
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 3)
     private BigDecimal unitPrice;
 
     @Column(nullable = false)

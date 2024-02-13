@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor @AllArgsConstructor
 @Entity
-//uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})} permite especificar que el unico campo que no se puede repetir es el username
+//uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})} permite especificar que un campo de BD no se debe repetir
 @Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 @PrimaryKeyJoinColumn(name = "user_id")
 public class User extends Person implements UserDetails{
@@ -36,6 +36,7 @@ public class User extends Person implements UserDetails{
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
