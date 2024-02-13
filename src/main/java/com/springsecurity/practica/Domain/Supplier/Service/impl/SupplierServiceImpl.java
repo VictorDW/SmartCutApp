@@ -120,13 +120,11 @@ public class SupplierServiceImpl implements ISupplierService {
      */
     @Override
     public void delete(Long id) throws RuntimeException {
-        supplierRepository.findBySupplierId(id).ifPresentOrElse(
-                supplier -> {
-                    supplierRepository.save(
-                            MapperSupplier.mapperSupplierDelete(supplier)
-                    );
-                }
-                ,()-> {throw new RuntimeException("Proveedor no encontrado");});
+        supplierRepository.findBySupplierId(id)
+                .ifPresentOrElse(
+                    supplier -> supplierRepository.save(MapperSupplier.mapperSupplierDelete(supplier))
+                    ,()-> {throw new RuntimeException("Proveedor no encontrado");}
+                );
     }
 
 }

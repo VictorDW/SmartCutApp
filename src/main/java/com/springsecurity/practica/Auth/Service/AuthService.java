@@ -6,6 +6,7 @@ import com.springsecurity.practica.Jwt.JwtService;
 import com.springsecurity.practica.User.Entity.User;
 import com.springsecurity.practica.User.Mapper.MapperUser;
 import com.springsecurity.practica.User.Repository.UserRepository;
+import com.springsecurity.practica.User.Service.IUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final IUserService userService;
 
     /**
      * Este método permite autenticar un usuario registrado en la base de datos
@@ -62,8 +64,12 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest request) {
 
+        //temporalmente, se validará en este método si el username ya existe
+        userService.isThereUsername(request.getUsername());
+
         var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);
+
     }
 
 

@@ -80,7 +80,7 @@ public class MaterialsController {
     @PutMapping("/{id}")
     public ResponseEntity<HttpHeaders> deleteMaterials(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
         materialsService.delete(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }

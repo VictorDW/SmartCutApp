@@ -18,30 +18,30 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "first_name", nullable = false)
-    private String firstName;
+    protected String firstName;
 
     @Column(name = "last_name", nullable = false)
-    private String lastName;
+    protected String lastName;
 
     @Column(nullable = false)
-    private String email;
+    protected String email;
 
     @Column(nullable = false)
-    private String cedula;
+    protected String cedula;
 
     @Column(nullable = false)
-    private String phone;
+    protected String phone;
 
     @Column(nullable = false)
-    private String address;
+    protected String address;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    protected Status status;
 
     @Column(name = "data_register", nullable = false)
-    private LocalDateTime dateRegister;
+    protected LocalDateTime dateRegister;
 }

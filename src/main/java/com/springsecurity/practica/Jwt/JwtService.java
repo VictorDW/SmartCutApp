@@ -105,8 +105,8 @@ public class JwtService {
      * @return Booleano el cual permite corroborar la valides del token
      */
     public boolean isValidToken(String token, UserDetails userDetails) {
-        final String userName = getUserNameFromToken(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpiration(token));
+        final String username = getUserNameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpiration(token));
     }
 
     /**
