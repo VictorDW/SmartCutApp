@@ -21,6 +21,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final String MESSAGE_USER_NOT_FOUND = "Usuario no encontrado";
 
     @Override
     public List<UserResponse> getAllUsers() {
@@ -30,36 +31,51 @@ public class UserServiceImpl implements IUserService {
                 .toList();
     }
 
-
-    private void executeValidationAccess(Long id) throws AccessDeniedException {
+    private void executeValidationAccess(String username) throws AccessDeniedException {
         //Obtenemos el usuario autenticado y autorizado
         final User authenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        if (!id.equals(authenticatedUser.getId()) && authenticatedUser.getRole().equals(Role.USER)) {
-            throw new AccessDeniedException("ACCESS DENIED!");
+        if (!(username.equals(authenticatedUser.getUsername())) && authenticatedUser.getRole().equals(Role.USER)) {
+            throw new AccessDeniedException("Acceso denegado!");
         }
     }
 
     @Override
-    public UserResponse getById(Long id) throws AccessDeniedException {
-
-        executeValidationAccess(id);
-        return userRepository.findById(id)
-           /* .filter(
-                user -> user.getId().equals(authenticatedUser.getId()) || authenticatedUser.getRole().equals(Role.ADMIN)) */
-            .map(MapperUser::mapperUserToUserResponse)
-            .orElseThrow(()-> new RuntimeException("USER NOT FOUND"));
+    public UserResponse getUserByUsername(String username)throws AccessDeniedException {
+        executeValidationAccess(username);
+        return userRepository.findByUsername(username)
+                .map(MapperUser::mapperUserToUserResponse)
+                .orElseThrow(()-> new RuntimeException(MESSAGE_USER_NOT_FOUND));
     }
 
     public UserResponse update(UserUpdate update) throws AccessDeniedException {
 
-        executeValidationAccess(update.id());
+        executeValidationAccess(update.username());
         return userRepository.findById(update.id())
             .map(user -> {
-                    var userUpdate = userRepository.save(MapperUser.mapperUserUpdate(user, update, passwordEncoder));
-
-                    return MapperUser.mapperUserToUserResponse(userUpdate);
+                   var userUpdate = userRepository.save(MapperUser.mapperUserUpdate(user, update, passwordEncoder));
+                   return MapperUser.mapperUserToUserResponse(userUpdate);
                 }
-            ).orElseThrow(()-> new RuntimeException("USER NOT FOUND"));
+            ).orElseThrow(()-> new RuntimeException(MESSAGE_USER_NOT_FOUND));
     }
+
+    @Override
+    public void changeUserStatus(Long id) {
+        userRepository.findById(id)
+                .ifPresentOrElse(
+                   user -> userRepository.save(MapperUser.mapperStatusUser(user)),
+                   ()-> {throw new RuntimeException(MESSAGE_USER_NOT_FOUND);}
+                );
+    }
+
+    @Override
+    public void isThereUsername(String username) throws RuntimeException {
+        var isThere = userRepository.findByUsername(username);
+
+        if (isThere.isPresent()) {
+            throw new RuntimeException("El Username se encuentra en uso");
+        }
+
+    }
+
 }

@@ -73,4 +73,10 @@ public class MapperUser {
 
         return user;
     }
+
+    public static User mapperStatusUser(User user) {
+        Status newStatusUser = (user.getStatus().equals(Status.ACTIVE)) ? Status.INACTIVE : Status.ACTIVE;
+        user.setStatus(newStatusUser);
+        return user;
+    }
 }
