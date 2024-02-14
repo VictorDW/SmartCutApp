@@ -1,7 +1,9 @@
 package com.springsecurity.demo.config;
 
+import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Jwt.JwtAuthenticationFilter;
 import com.springsecurity.demo.User.Permission;
+import com.springsecurity.demo.User.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -71,23 +73,23 @@ public class SecurityConfig {
 
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").hasAuthority(Permission.REGISTER_ONE_USER.name())
-                .requestMatchers(HttpMethod.GET, USER_PATH+"/verify/").hasAuthority(Permission.REGISTER_ONE_USER.name())
+                .requestMatchers(HttpMethod.GET, USER_PATH+"/verify/{username}").hasAuthority(Permission.REGISTER_ONE_USER.name())
                 .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(Permission.READ_ALL_USER.name())
-                .requestMatchers(HttpMethod.GET, USER_PATH+"/").hasAuthority(Permission.READ_ONE_USER.name())
+                .requestMatchers(HttpMethod.GET, USER_PATH+"/{username}").hasAuthority(Permission.READ_ONE_USER.name())
                 .requestMatchers(HttpMethod.PUT, USER_PATH).hasAuthority(Permission.UPDATE_USER.name())
-                .requestMatchers(HttpMethod.PUT, USER_PATH+"/").hasAuthority(Permission.CHANGE_USER_STATUS.name())
+                .requestMatchers(HttpMethod.DELETE, USER_PATH+"/status/{id}").hasAuthority(Permission.CHANGE_USER_STATUS.name())
 
                 .requestMatchers(HttpMethod.POST, SUPPLIER_PATH).hasAuthority(Permission.CREATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER_PATH).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
-                .requestMatchers(HttpMethod.GET, SUPPLIER_PATH+"/").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.GET, SUPPLIER_PATH+"/{cedula}").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH).hasAuthority(Permission.UPDATE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH+"/").hasAuthority(Permission.DELETE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.DELETE, SUPPLIER_PATH+"/status/{id}").hasAuthority(Permission.DELETE_SUPPLIER.name())
 
                 .requestMatchers(HttpMethod.POST, MATERIALS_PATH).hasAuthority(Permission.CREATE_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS_PATH).hasAuthority(Permission.READ_ALL_MATERIALS.name())
-                .requestMatchers(HttpMethod.GET, MATERIALS_PATH+"/").hasAuthority(Permission.READ_ONE_MATERIALS.name())
+                .requestMatchers(HttpMethod.GET, MATERIALS_PATH+"/{code}").hasAuthority(Permission.READ_ONE_MATERIALS.name())
                 .requestMatchers(HttpMethod.PUT, MATERIALS_PATH).hasAuthority(Permission.UPDATE_MATERIALS.name())
-                .requestMatchers(HttpMethod.PUT, MATERIALS_PATH+"/").hasAuthority(Permission.UPDATE_MATERIALS.name())
+                .requestMatchers(HttpMethod.DELETE, MATERIALS_PATH+"/status/{id}").hasAuthority(Permission.DELETE_MATERIALS.name())
                 .anyRequest().authenticated();
     }
 }
