@@ -50,7 +50,6 @@ public class RegisterRequest {
 
     @NotBlank(message = "El campo no puede estar vacio")
     private String address;
-
-    @NotBlank(message = "El Rol no puede estar vacio")
+    
     private Role role;
 }
