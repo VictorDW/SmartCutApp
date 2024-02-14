@@ -1,9 +1,7 @@
 package com.springsecurity.demo.config;
 
-import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Jwt.JwtAuthenticationFilter;
 import com.springsecurity.demo.User.Permission;
-import com.springsecurity.demo.User.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
