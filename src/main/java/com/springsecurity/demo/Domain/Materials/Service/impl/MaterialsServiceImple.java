@@ -6,10 +6,12 @@ import com.springsecurity.demo.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.demo.Domain.Materials.Mapper.MapperMaterials;
 import com.springsecurity.demo.Domain.Materials.Repository.MaterialsRepository;
 import com.springsecurity.demo.Domain.Materials.Service.IMaterialsService;
+import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Domain.Supplier.Service.ISupplierService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,7 +55,7 @@ public class MaterialsServiceImple implements IMaterialsService {
                 materials.stream()
                     .map(MapperMaterials::mapperMaterialsToMaterialsResponse)
                     .toList())
-            .orElseThrow(() -> new RuntimeException("Material no encontrado"));
+            .orElse(new ArrayList<>());
 
     }
 
@@ -63,9 +65,9 @@ public class MaterialsServiceImple implements IMaterialsService {
      * @return Una lista de objetos MaterialsResponse que representa todos los materiales en la base de datos.
      */
     @Override
-    public List<MaterialsResponse> getAll() {
+    public List<MaterialsResponse> getAll(Status status) {
 
-        return materialsRepository.findAllMaterials().stream()
+        return materialsRepository.findAllMaterials(status).stream()
                 .map(MapperMaterials::mapperMaterialsToMaterialsResponse)
                 .toList();
     }

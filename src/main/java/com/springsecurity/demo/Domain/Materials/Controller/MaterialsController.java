@@ -4,6 +4,8 @@ import com.springsecurity.demo.Domain.Materials.DTO.MaterialsRequest;
 import com.springsecurity.demo.Domain.Materials.DTO.MaterialsResponse;
 import com.springsecurity.demo.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.demo.Domain.Materials.Service.IMaterialsService;
+import com.springsecurity.demo.Domain.Status;
+import com.springsecurity.demo.Domain.Util.ValidateStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
@@ -56,8 +58,9 @@ public class MaterialsController {
      * @return ResponseEntity con una lista que contiene la información de todos los materiales y un código de estado HTTP 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<MaterialsResponse>> getAllMaterials() {
-        return ResponseEntity.ok(materialsService.getAll());
+    public ResponseEntity<List<MaterialsResponse>> getAllMaterials(@RequestParam(defaultValue = "ACTIVO") String status) {
+        Status state = ValidateStatus.getStatus(status.toUpperCase());
+        return ResponseEntity.ok(materialsService.getAll(state));
     }
 
     /**
