@@ -81,7 +81,7 @@ public class SupplierController {
      * @param id El id del proveedor a inactivar.
      * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
      */
-    @PutMapping("/{id}")
+    @DeleteMapping("/status/{id}")
     public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
         supplierService.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
