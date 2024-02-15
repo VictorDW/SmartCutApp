@@ -32,6 +32,7 @@ public class MapperSupplier {
     public static SupplierResponse mapperSuppliertToSupplierResponse(Supplier supplier) {
 
         return new SupplierResponse(
+                supplier.getId(),
                 supplier.getFirstName(),
                 supplier.getLastName(),
                 supplier.getCedula(),
@@ -55,8 +56,8 @@ public class MapperSupplier {
     }
 
     public static Supplier mapperSupplierDelete(Supplier supplier) {
-
-        supplier.setStatus(Status.INACTIVE);
+        Status newStatusSupplier = (supplier.getStatus().equals(Status.ACTIVE)) ? Status.INACTIVE : Status.ACTIVE;
+        supplier.setStatus(newStatusSupplier);
         return supplier;
     }
 }

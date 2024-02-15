@@ -6,6 +6,7 @@ import com.springsecurity.demo.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.demo.Domain.Materials.Entity.Materials;
 import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponse;
+import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponseBasic;
 import com.springsecurity.demo.Domain.Supplier.Entity.Supplier;
 import org.springframework.lang.Nullable;
 
@@ -38,15 +39,12 @@ public class MapperMaterials{
         var supplier = materials.getSupplier();
 
         return new MaterialsResponse(
+                materials.getId(),
                 materials.getCode(),
-                new SupplierResponse(
+                new SupplierResponseBasic(
                         supplier.getFirstName(),
                         supplier.getLastName(),
-                        supplier.getCedula(),
-                        supplier.getPhone(),
-                        supplier.getAddress(),
-                        supplier.getDateRegister(),
-                        supplier.getDescription()
+                        supplier.getPhone()
                 ),
                 materials.getName(),
                 materials.getType(),

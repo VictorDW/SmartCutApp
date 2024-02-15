@@ -1,9 +1,11 @@
 package com.springsecurity.demo.Domain.Supplier.Controller;
 
+import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierRequest;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponse;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierUpdate;
 import com.springsecurity.demo.Domain.Supplier.Service.ISupplierService;
+import com.springsecurity.demo.Domain.Util.ValidateStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controlador que permite recibir las solicitudes a la sección de proveedores de la API y retornar las respuestas
@@ -61,8 +64,9 @@ public class SupplierController {
      * @return ResponseEntity con una lista que contiene la información de todos los proveedores y un código de estado HTTP 200 (OK).
      */
     @GetMapping
-    public ResponseEntity<List<SupplierResponse>> getAllSupplier() {
-        return ResponseEntity.ok(supplierService.getAll());
+    public ResponseEntity<List<SupplierResponse>> getAllSupplier(@RequestParam Optional<String> status) {
+        Status state = ValidateStatus.getStatus(status);
+        return ResponseEntity.ok(supplierService.getAll(state));
     }
 
     /**
@@ -83,7 +87,7 @@ public class SupplierController {
      */
     @DeleteMapping("/status/{id}")
     public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
-        supplierService.delete(id);
+        supplierService.changeSupplierStatus(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

@@ -1,5 +1,6 @@
 package com.springsecurity.demo.Domain.Supplier.Service.impl;
 
+import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierRequest;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponse;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierUpdate;
@@ -17,6 +18,7 @@ import java.util.List;
 public class SupplierServiceImpl implements ISupplierService {
 
     public final SupplierRepository supplierRepository;
+    private static final String MESSAGE_SUPPLIER_NOT_FOUND = "Proveedor no encontrado";
 
     /**
      * Verifica si un proveedor ya existe y, en caso de no existir, crea uno nuevo en la base de datos.
@@ -48,7 +50,7 @@ public class SupplierServiceImpl implements ISupplierService {
     @Override
     public Supplier getSupplier(Long id) {
         return supplierRepository.findBySupplierId(id)
-                .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
+                .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
@@ -77,7 +79,7 @@ public class SupplierServiceImpl implements ISupplierService {
 
         return supplierRepository.findByCedula(cedula)
             .map(MapperSupplier::mapperSuppliertToSupplierResponse)
-            .orElseThrow(()-> new RuntimeException("Proveedor no encontrado"));
+            .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
@@ -86,8 +88,8 @@ public class SupplierServiceImpl implements ISupplierService {
      * @return Una lista de objetos SupplierResponse que representa todos los proveedores en la base de datos.
      */
     @Override
-    public List<SupplierResponse> getAll() {
-        return supplierRepository.findAllSupplier()
+    public List<SupplierResponse> getAll(Status status) {
+        return supplierRepository.findAllSupplier(status)
                 .stream().map(MapperSupplier::mapperSuppliertToSupplierResponse)
                 .toList();
     }
@@ -109,21 +111,21 @@ public class SupplierServiceImpl implements ISupplierService {
                     );
                     return  MapperSupplier.mapperSuppliertToSupplierResponse(supplierUpdate);
                 })
-                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
+                .orElseThrow(() -> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
      * Pone en estado inactivo el proveedor obtenido a apartir de la cedula
      *
-     * @param cedula El número de cédula del proveedor a descativar.
+     * @param id El número de cédula del proveedor a descativar.
      * @throws RuntimeException si no se encuentra ningún proveedor con la cédula proporcionada.
      */
     @Override
-    public void delete(Long id) throws RuntimeException {
+    public void changeSupplierStatus(Long id) throws RuntimeException {
         supplierRepository.findBySupplierId(id)
                 .ifPresentOrElse(
                     supplier -> supplierRepository.save(MapperSupplier.mapperSupplierDelete(supplier))
-                    ,()-> {throw new RuntimeException("Proveedor no encontrado");}
+                    ,()-> {throw new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND);}
                 );
     }
 

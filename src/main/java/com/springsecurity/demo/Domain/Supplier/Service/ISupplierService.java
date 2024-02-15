@@ -1,5 +1,6 @@
 package com.springsecurity.demo.Domain.Supplier.Service;
 
+import com.springsecurity.demo.Domain.Status;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierRequest;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponse;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierUpdate;
@@ -11,7 +12,7 @@ public interface ISupplierService {
     SupplierResponse create(SupplierRequest request);
     Supplier getSupplier(Long id);
     SupplierResponse getSupplierByCedula(String cedula);
-    List<SupplierResponse> getAll();
+    List<SupplierResponse> getAll(Status status);
     SupplierResponse update(SupplierUpdate update);
-    void delete(Long id);
+    void changeSupplierStatus(Long id);
 }
