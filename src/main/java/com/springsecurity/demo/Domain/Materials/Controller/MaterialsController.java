@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -58,8 +59,8 @@ public class MaterialsController {
      * @return ResponseEntity con una lista que contiene la información de todos los materiales y un código de estado HTTP 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<MaterialsResponse>> getAllMaterials(@RequestParam(defaultValue = "ACTIVO") String status) {
-        Status state = ValidateStatus.getStatus(status.toUpperCase());
+    public ResponseEntity<List<MaterialsResponse>> getAllMaterials(@RequestParam Optional<String> status) {
+        Status state = ValidateStatus.getStatus(status);
         return ResponseEntity.ok(materialsService.getAll(state));
     }
 

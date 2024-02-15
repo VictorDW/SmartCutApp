@@ -5,12 +5,14 @@ import com.springsecurity.demo.Domain.Status;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 //Patrón Singleton
 public class ValidateStatus {
 
-  static ValidateStatus instance;
-  static Map<String, Status> instanceStatus;
+   static ValidateStatus instance;
+   static final String STATUS_DEFAULT = "ACTIVE";
+   static Map<String, Status> instanceStatus;
 
   private ValidateStatus() {
     fillMap();
@@ -26,13 +28,16 @@ public class ValidateStatus {
     return instanceStatus;
   }
 
-  public static Status getStatus(String stringStatus) {
-    var status = getInstance().getMap();
+  public static Status getStatus(Optional<String> state) {
 
-     if (status.containsKey(stringStatus)) {
-        return status.get(stringStatus);
+    var status = getInstance().getMap();
+    // Mapear a mayúsculas y obtener el valor, de lo contrario el estado por defecto si esta vacio
+    String statusText = state.map(String::toUpperCase).orElse(STATUS_DEFAULT);
+
+     if (status.containsKey(statusText)) {
+        return status.get(statusText);
      }
-     return status.get("ACTIVE");
+     return status.get(STATUS_DEFAULT);
   }
 
   private static ValidateStatus getInstance() {
