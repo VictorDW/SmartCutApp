@@ -13,5 +13,5 @@ public interface IMaterialsService{
     List<MaterialsResponse> getMaterialsByCode(String code);
     List<MaterialsResponse> getAll(Status status);
     MaterialsResponse update(MaterialsUpdate update);
-    void delete(Long id);
+    void changeMaterialState(Long id);
 }

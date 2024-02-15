@@ -50,6 +50,7 @@ public class SupplierServiceImpl implements ISupplierService {
     @Override
     public Supplier getSupplier(Long id) {
         return supplierRepository.findBySupplierId(id)
+                .filter(supplier -> supplier.getStatus() != Status.INACTIVE)
                 .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
@@ -78,6 +79,7 @@ public class SupplierServiceImpl implements ISupplierService {
     public SupplierResponse getSupplierByCedula(String cedula) {
 
         return supplierRepository.findByCedula(cedula)
+            .filter(supplier -> supplier.getStatus() != Status.INACTIVE)
             .map(MapperSupplier::mapperSuppliertToSupplierResponse)
             .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
     }

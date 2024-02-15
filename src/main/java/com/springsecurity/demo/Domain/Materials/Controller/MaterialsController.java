@@ -82,8 +82,8 @@ public class MaterialsController {
      * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
      */
     @DeleteMapping("/status/{id}")
-    public ResponseEntity<HttpHeaders> changeStatusMaterial(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
-        materialsService.delete(id);
+    public ResponseEntity<HttpHeaders> changeMaterialState(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+        materialsService.changeMaterialState(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

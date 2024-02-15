@@ -86,7 +86,7 @@ public class SupplierController {
      * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
      */
     @DeleteMapping("/status/{id}")
-    public ResponseEntity<HttpHeaders> deleteSupplier(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+    public ResponseEntity<HttpHeaders> changeSupplierStatus(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
         supplierService.changeSupplierStatus(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

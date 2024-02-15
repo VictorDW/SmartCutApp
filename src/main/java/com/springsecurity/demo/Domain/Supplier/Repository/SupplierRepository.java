@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-    @Query("SELECT s FROM Supplier s WHERE s.cedula= :cedula AND NOT(s.status='INACTIVO')")
+    @Query("SELECT s FROM Supplier s WHERE s.cedula= :cedula")
     Optional<Supplier> findByCedula(@Param("cedula") String Cedula);
 
-    @Query("SELECT s FROM Supplier s WHERE s.id= :id AND NOT(s.status='INACTIVO')")
+    @Query("SELECT s FROM Supplier s WHERE s.id= :id")
     Optional<Supplier> findBySupplierId(@Param("id") Long id);
 
     @Query("SELECT s FROM Supplier s WHERE s.status=:status")
