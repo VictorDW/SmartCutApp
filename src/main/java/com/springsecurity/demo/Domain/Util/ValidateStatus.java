@@ -20,7 +20,7 @@ public class ValidateStatus {
 
   private static void fillMap() {
     instanceStatus = new HashMap<>();
-    instanceStatus.put("ACTIVE", Status.ACTIVE);
+    instanceStatus.put(STATUS_DEFAULT, Status.ACTIVE);
     instanceStatus.put("INACTIVE", Status.INACTIVE);
   }
 

@@ -55,7 +55,7 @@ public class MapperSupplier {
         return supplier;
     }
 
-    public static Supplier mapperSupplierDelete(Supplier supplier) {
+    public static Supplier mapperStatus(Supplier supplier) {
         Status newStatusSupplier = (supplier.getStatus().equals(Status.ACTIVE)) ? Status.INACTIVE : Status.ACTIVE;
         supplier.setStatus(newStatusSupplier);
         return supplier;

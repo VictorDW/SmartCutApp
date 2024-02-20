@@ -5,7 +5,6 @@ import com.springsecurity.demo.Domain.Materials.DTO.MaterialsResponse;
 import com.springsecurity.demo.Domain.Materials.DTO.MaterialsUpdate;
 import com.springsecurity.demo.Domain.Materials.Entity.Materials;
 import com.springsecurity.demo.Domain.Status;
-import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponse;
 import com.springsecurity.demo.Domain.Supplier.DTO.SupplierResponseBasic;
 import com.springsecurity.demo.Domain.Supplier.Entity.Supplier;
 import org.springframework.lang.Nullable;
@@ -77,9 +76,9 @@ public class MapperMaterials{
         return materials;
     }
 
-    public static Materials mapperMaterialsDelete(Materials materials) {
-
-        materials.setStatus(Status.INACTIVE);
+    public static Materials mapperState(Materials materials) {
+        Status newStatusSupplier = (materials.getStatus().equals(Status.ACTIVE)) ? Status.INACTIVE : Status.ACTIVE;
+        materials.setStatus(newStatusSupplier);
         return materials;
     }
 }

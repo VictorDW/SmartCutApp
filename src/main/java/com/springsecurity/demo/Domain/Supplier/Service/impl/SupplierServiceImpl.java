@@ -126,7 +126,7 @@ public class SupplierServiceImpl implements ISupplierService {
     public void changeSupplierStatus(Long id) throws RuntimeException {
         supplierRepository.findBySupplierId(id)
                 .ifPresentOrElse(
-                    supplier -> supplierRepository.save(MapperSupplier.mapperSupplierDelete(supplier))
+                    supplier -> supplierRepository.save(MapperSupplier.mapperStatus(supplier))
                     ,()-> {throw new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND);}
                 );
     }

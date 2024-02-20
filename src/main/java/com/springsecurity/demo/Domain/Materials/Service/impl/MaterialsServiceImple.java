@@ -113,7 +113,7 @@ public class MaterialsServiceImple implements IMaterialsService {
         materialsRepository.findMaterialById(id)
           .ifPresentOrElse(
                 materials ->
-                  materialsRepository.save(MapperMaterials.mapperMaterialsDelete(materials))
+                  materialsRepository.save(MapperMaterials.mapperState(materials))
                 ,()-> {throw new RuntimeException("Material no encontrado");}
           );
     }
