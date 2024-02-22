@@ -45,10 +45,15 @@ public class HandlerException {
   }
 
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<List<ErrorArgumentResponse>> handlerCommandInvalidException(ConstraintViolationException exception, WebRequest request) {
-    var errors = exception.getConstraintViolations().stream().map(ErrorArgumentResponse::new).toList();
+  public ResponseEntity<ErrorArgumentResponse> handlerCommandInvalidException(ConstraintViolationException exception, WebRequest request) {
+
+    var errors = exception.getConstraintViolations()
+                          .stream()
+                          .map(ErrorArgumentResponse::new)
+                          .findFirst()
+                          .get();
+
     return ResponseEntity.badRequest().body(errors);
-    //return this.exceptionHandler(exception, request, HttpStatus.BAD_REQUEST);
   }
 
 }

@@ -13,6 +13,6 @@ public record ErrorArgumentResponse(
   }
 
   public ErrorArgumentResponse(ConstraintViolation error) {
-    this(error.getMessageTemplate(), error.getMessage());
+    this("Parámetro de solicitud", error.getMessage());
   }
 }
