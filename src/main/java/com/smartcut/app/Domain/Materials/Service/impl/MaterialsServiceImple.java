@@ -8,6 +8,7 @@ import com.smartcut.app.Domain.Materials.Repository.MaterialsRepository;
 import com.smartcut.app.Domain.Materials.Service.IMaterialsService;
 import com.smartcut.app.Domain.Status;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
+import com.smartcut.app.Error.MaterialNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +42,10 @@ public class MaterialsServiceImple implements IMaterialsService {
     }
 
     /**
-     * Obtiene uno o varios mateirales por su codigo y devuelve una lista de MaterialsResponse si se encuentra.
+     * Obtiene uno o varios matereales por su codigo y devuelve una lista de MaterialsResponse si se encuentra.
      *
      * @param code identifica a los materiales a buscar en la base de datos.
-     * @return Una lista de MaterialsResponse que representa los materiales encontrados con el mismo codigoo.
-     * @throws RuntimeException si no se encuentra ningún material con el codigo proporcionado.
+     * @return Una lista de MaterialsResponse que representa los materiales encontrados con el mismo codigo o una lista vacia.
      */
     @Override
     public List<MaterialsResponse> getMaterialsByCode(String code) {
@@ -97,7 +97,7 @@ public class MaterialsServiceImple implements IMaterialsService {
                     );
                     return MapperMaterials.mapperMaterialsToMaterialsResponse(materialUpdate);
 
-                }).orElseThrow(()-> new RuntimeException("Material no encontrado"));
+                }).orElseThrow(()-> new MaterialNotFoundException("Material no encontrado"));
     }
 
 
@@ -114,7 +114,7 @@ public class MaterialsServiceImple implements IMaterialsService {
           .ifPresentOrElse(
                 materials ->
                   materialsRepository.save(MapperMaterials.mapperState(materials))
-                ,()-> {throw new RuntimeException("Material no encontrado");}
+                ,()-> {throw new MaterialNotFoundException("Material no encontrado");}
           );
     }
 }

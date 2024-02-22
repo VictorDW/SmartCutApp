@@ -8,6 +8,8 @@ import com.smartcut.app.Domain.Supplier.Entity.Supplier;
 import com.smartcut.app.Domain.Supplier.Mapper.MapperSupplier;
 import com.smartcut.app.Domain.Supplier.Repository.SupplierRepository;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
+import com.smartcut.app.Error.SupplierAlreadyExitsException;
+import com.smartcut.app.Error.SupplierNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +53,7 @@ public class SupplierServiceImpl implements ISupplierService {
     public Supplier getSupplier(Long id) {
         return supplierRepository.findBySupplierId(id)
                 .filter(supplier -> supplier.getStatus() != Status.INACTIVE)
-                .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
+                .orElseThrow(()-> new SupplierNotFoundException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
@@ -65,7 +67,7 @@ public class SupplierServiceImpl implements ISupplierService {
         var supplier = supplierRepository.findByCedula(cedula);
 
         if(supplier.isPresent())
-            throw new RuntimeException("Proveedor con cedula "+ supplier.get().getCedula() +" ya se encuentra registrado");
+            throw new SupplierAlreadyExitsException("Proveedor con cedula "+ supplier.get().getCedula() +" ya se encuentra registrado");
     }
 
     /**
@@ -81,7 +83,7 @@ public class SupplierServiceImpl implements ISupplierService {
         return supplierRepository.findByCedula(cedula)
             .filter(supplier -> supplier.getStatus() != Status.INACTIVE)
             .map(MapperSupplier::mapperSuppliertToSupplierResponse)
-            .orElseThrow(()-> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
+            .orElseThrow(()-> new SupplierNotFoundException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
@@ -113,7 +115,7 @@ public class SupplierServiceImpl implements ISupplierService {
                     );
                     return  MapperSupplier.mapperSuppliertToSupplierResponse(supplierUpdate);
                 })
-                .orElseThrow(() -> new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND));
+                .orElseThrow(() -> new SupplierNotFoundException(MESSAGE_SUPPLIER_NOT_FOUND));
     }
 
     /**
@@ -127,7 +129,7 @@ public class SupplierServiceImpl implements ISupplierService {
         supplierRepository.findBySupplierId(id)
                 .ifPresentOrElse(
                     supplier -> supplierRepository.save(MapperSupplier.mapperStatus(supplier))
-                    ,()-> {throw new RuntimeException(MESSAGE_SUPPLIER_NOT_FOUND);}
+                    ,()-> {throw new SupplierNotFoundException(MESSAGE_SUPPLIER_NOT_FOUND);}
                 );
     }
 

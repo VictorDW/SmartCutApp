@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestControllerAdvice
-public class HandlerException {
+public class ExceptionManager {
 
 
   public ResponseEntity<ErrorResponse> generalExceptionHandler(RuntimeException exception, WebRequest request, HttpStatus httpStatus) {
@@ -35,7 +35,7 @@ public class HandlerException {
    * @return Retorna una lista de ErrorArgumentResponse los cuales contiene el atributo y el mensaje de error
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<List<ErrorArgumentResponse>> handlerArgumentInvalidException(MethodArgumentNotValidException exception) {
+  public ResponseEntity<List<ErrorArgumentResponse>> handlerArgumentInvalid(MethodArgumentNotValidException exception) {
 
     var errors = exception.getFieldErrors()
                           .stream()
@@ -52,7 +52,7 @@ public class HandlerException {
    * @return Retorna un ErrorArgumentResponse el cual contiene el mensaje de error
    */
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ErrorArgumentResponse> handlerCommandInvalidException(ConstraintViolationException exception) {
+  public ResponseEntity<ErrorArgumentResponse> handlerCommandInvalid(ConstraintViolationException exception) {
 
     var errors = exception.getConstraintViolations()
                           .stream()
@@ -70,8 +70,41 @@ public class HandlerException {
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ErrorResponse> handlerBadCredentialException(BadCredentialsException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerBadCredential(BadCredentialsException exception, WebRequest request) {
     return this.generalExceptionHandler(exception, request, HttpStatus.UNAUTHORIZED);
+  }
+
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un material buscado no se encuentra en la BD
+   * @param exception
+   * @param request
+   * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+  @ExceptionHandler(MaterialNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handlerMaterialNotFound(MaterialNotFoundException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un proveedor buscado no se encuentra en la BD
+   * @param exception
+   * @param request
+   * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+  @ExceptionHandler(SupplierNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un proveedor ya se encuentra registrado en la BD
+   * @param exception
+   * @param request
+   * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+  @ExceptionHandler(SupplierAlreadyExitsException.class)
+  public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.CONFLICT);
   }
 
 
