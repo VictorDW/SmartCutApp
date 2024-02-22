@@ -133,7 +133,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
 
-        }catch (ExpiredJwtException | MalformedJwtException | SignatureException e) {
+        }catch (JwtException e) {
             //Se capturan las excepciones propies de Jwts y se crea una personalizada al momento que se lanzan
             throw new ErrorValidationTokenException("TOKEN INVALIDO O EXPIRADO!");
         }

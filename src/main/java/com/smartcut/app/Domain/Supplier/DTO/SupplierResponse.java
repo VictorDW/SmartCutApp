@@ -8,7 +8,7 @@ public record SupplierResponse(
         String lastName,
         String cedula,
         String phone,
-        String addres,
+        String address,
         LocalDateTime dataRegister,
         String description
 ) {
