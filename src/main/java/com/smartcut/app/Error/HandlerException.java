@@ -3,6 +3,7 @@ package com.smartcut.app.Error;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,7 +16,7 @@ import java.util.List;
 public class HandlerException {
 
 
-  public ResponseEntity<ErrorResponse> exceptionHandler(RuntimeException exception, WebRequest request, HttpStatus httpStatus) {
+  public ResponseEntity<ErrorResponse> generalExceptionHandler(RuntimeException exception, WebRequest request, HttpStatus httpStatus) {
 
     ErrorResponse error = new ErrorResponse(
         LocalDateTime.now(),
@@ -44,8 +45,14 @@ public class HandlerException {
     return ResponseEntity.badRequest().body(errors);
   }
 
+  /**
+   * Este método permite manejar la excepción que se lanzan al momento de verificar si la request parameter es valida.
+   *
+   * @param exception
+   * @return Retorna un ErrorArgumentResponse el cual contiene el mensaje de error
+   */
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ErrorArgumentResponse> handlerCommandInvalidException(ConstraintViolationException exception, WebRequest request) {
+  public ResponseEntity<ErrorArgumentResponse> handlerCommandInvalidException(ConstraintViolationException exception) {
 
     var errors = exception.getConstraintViolations()
                           .stream()
@@ -55,5 +62,17 @@ public class HandlerException {
 
     return ResponseEntity.badRequest().body(errors);
   }
+
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que las credenciales para autenticarse son incorrectas
+   * @param exception
+   * @param request
+   * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<ErrorResponse> handlerBadCredentialException(BadCredentialsException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.UNAUTHORIZED);
+  }
+
 
 }
