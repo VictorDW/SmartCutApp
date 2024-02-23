@@ -25,12 +25,16 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping("/verify/{username}")
-    public ResponseEntity<HttpHeaders> isThereUsername(@PathVariable
+    public ResponseEntity<String> isThereUsername(@PathVariable
                                                        @Pattern(regexp = "^[A-Za-z0-9]+$", message = "No debe contener caracteres especiales")
                                                        @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
                                                        String username) {
-      userService.isThereUsername(username);
-      return ResponseEntity.noContent().build();
+
+      var response = userService.checkUsernameAvailability(username);
+      String message = (String) response.get(0);
+      HttpStatus codeStatus = (HttpStatus) response.get(1);
+
+      return new ResponseEntity<>(message,codeStatus);
     }
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {

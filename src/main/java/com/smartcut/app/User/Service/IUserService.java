@@ -2,16 +2,17 @@ package com.smartcut.app.User.Service;
 
 import com.smartcut.app.User.DTO.UserResponse;
 import com.smartcut.app.User.DTO.UserUpdate;
+import org.springframework.http.HttpStatus;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public interface IUserService {
     List<UserResponse> getAllUsers();
     UserResponse getUserByUsername(String username);
     UserResponse update(UserUpdate update);
     void changeUserStatus(Long id);
-    void isThereUsername(String username);
-
-
+    List<Object> checkUsernameAvailability(String username);
+    void validateUsername(String username);
 }

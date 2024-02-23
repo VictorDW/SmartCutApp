@@ -65,7 +65,7 @@ public class AuthService {
     public void register(RegisterRequest request) {
 
         //temporalmente, se validará en este método si el username ya existe
-        userService.isThereUsername(request.getUsername());
+        userService.validateUsername(request.getUsername());
 
         var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);

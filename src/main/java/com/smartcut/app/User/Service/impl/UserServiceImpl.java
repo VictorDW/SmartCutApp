@@ -11,12 +11,13 @@ import com.smartcut.app.User.Repository.UserRepository;
 import com.smartcut.app.User.Role;
 import com.smartcut.app.User.Service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -71,14 +72,26 @@ public class UserServiceImpl implements IUserService {
                 );
     }
 
-    @Override
-    public void isThereUsername(String username) {
-        var isThere = userRepository.findByUsername(username);
-
-        if (isThere.isPresent()) {
-            throw new RuntimeException("El Username se encuentra en uso");
-        }
-
+    private Boolean isUsernameAlreadyTaken(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
+
+    @Override
+    public List<Object> checkUsernameAvailability(String username) {
+
+        return isUsernameAlreadyTaken(username) ?
+            Arrays.asList("No Disponible", HttpStatus.BAD_REQUEST) :
+            Arrays.asList("Disponible", HttpStatus.OK);
+    }
+
+
+    @Override
+    public void validateUsername(String username) {
+        if (isUsernameAlreadyTaken(username)) {
+            throw new UsernameAlreadyExistException("El Username se encuentra en uso");
+        }
+    }
+
+
 
 }
