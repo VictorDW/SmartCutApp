@@ -1,6 +1,7 @@
 package com.smartcut.app.Config;
 
 import com.smartcut.app.User.Repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -65,5 +68,19 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User not fount"));
+    }
+
+    @Bean
+    public AuthenticationEntryPoint jwtAthenticationEntrypoint() {
+        return (request, response, authException) -> {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Autenticación Fallida: " + authException.getMessage());
+        };
+    }
+
+    @Bean
+    public AccessDeniedHandler PermissionsAccessDeniedHandler() {
+        return (request, response, accessDeniedException) ->  {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso Denegado: " + accessDeniedException.getMessage());
+        };
     }
 }

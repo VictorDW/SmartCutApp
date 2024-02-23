@@ -2,6 +2,7 @@ package com.smartcut.app.Config;
 
 import com.smartcut.app.Jwt.JwtAuthenticationFilter;
 import com.smartcut.app.User.Permission;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,9 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -25,6 +28,8 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AccessDeniedHandler permissionsAccessDeniedHandler;
 
     /**
      * Este método permite configurar la cadena de filtros de seguridad, personalizando la seguridad de Spring Security
@@ -46,6 +51,11 @@ public class SecurityConfig {
                 sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+          /* .exceptionHandling(exceptionConfig ->
+                exceptionConfig.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                                .accessDeniedHandler(permissionsAccessDeniedHandler))
+
+           */
             /*
             * con una expresión de método de referencia podemos llamar al método,
             * es equivalente a realizar la lambda, authRequestConfig -> httpRequestPath(authRequestConfig)

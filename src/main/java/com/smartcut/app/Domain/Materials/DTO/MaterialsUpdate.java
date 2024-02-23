@@ -34,7 +34,7 @@ public record MaterialsUpdate(
 
         @NotNull(message = "Se requiere definir el costo del material por unidad")
         @DecimalMin(value = "0.00", message = "Error en el formato del precio")
-        @DecimalMax(value = "9999.99", message = "Error en el formato del precio")
+        @DecimalMax(value = "999.999", message = "Error en el formato del precio")
         BigDecimal unitPrice,
 
         @NotNull(message = "Se requiere definir la cantidad")

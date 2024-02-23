@@ -20,12 +20,12 @@ public record SupplierUpdate(
         @NotBlank(message = "El campo no puede estar vacio")
         String lastName,
 
-        @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
+        @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
         @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
         @NotBlank(message = "El campo no puede estar vacio")
         String cedula,
 
-        @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
+        @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
         @Size(min = 10, max = 10, message = "Error en el formato del numero de celular")
         @NotBlank(message = "El campo no puede estar vacio")
         String phone,
