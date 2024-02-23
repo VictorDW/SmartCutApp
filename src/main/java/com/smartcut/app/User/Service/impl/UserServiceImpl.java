@@ -1,5 +1,8 @@
 package com.smartcut.app.User.Service.impl;
 
+import com.smartcut.app.Error.UserNotFoundException;
+import com.smartcut.app.Error.UsernameAlreadyExistException;
+import com.smartcut.app.Error.WithoutPermitsException;
 import com.smartcut.app.User.DTO.UserResponse;
 import com.smartcut.app.User.DTO.UserUpdate;
 import com.smartcut.app.User.Entity.User;
@@ -31,24 +34,24 @@ public class UserServiceImpl implements IUserService {
                 .toList();
     }
 
-    private void executeValidationAccess(String username) throws AccessDeniedException {
+    private void executeValidationAccess(String username){
         //Obtenemos el usuario autenticado y autorizado
         final User authenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         if (!(username.equals(authenticatedUser.getUsername())) && authenticatedUser.getRole().equals(Role.USER)) {
-            throw new AccessDeniedException("Acceso denegado!");
+            throw new WithoutPermitsException("Acceso denegado, no tienes los permisos");
         }
     }
 
     @Override
-    public UserResponse getUserByUsername(String username)throws AccessDeniedException {
+    public UserResponse getUserByUsername(String username) {
         executeValidationAccess(username);
         return userRepository.findByUsername(username)
                 .map(MapperUser::mapperUserToUserResponse)
-                .orElseThrow(()-> new RuntimeException(MESSAGE_USER_NOT_FOUND));
+                .orElseThrow(()-> new UserNotFoundException(MESSAGE_USER_NOT_FOUND));
     }
 
-    public UserResponse update(UserUpdate update) throws AccessDeniedException {
+    public UserResponse update(UserUpdate update){
 
         executeValidationAccess(update.username());
         return userRepository.findById(update.id())
@@ -56,7 +59,7 @@ public class UserServiceImpl implements IUserService {
                    var userUpdate = userRepository.save(MapperUser.mapperUserUpdate(user, update, passwordEncoder));
                    return MapperUser.mapperUserToUserResponse(userUpdate);
                 }
-            ).orElseThrow(()-> new RuntimeException(MESSAGE_USER_NOT_FOUND));
+            ).orElseThrow(()-> new UserNotFoundException(MESSAGE_USER_NOT_FOUND));
     }
 
     @Override
@@ -64,12 +67,12 @@ public class UserServiceImpl implements IUserService {
         userRepository.findById(id)
                 .ifPresentOrElse(
                    user -> userRepository.save(MapperUser.mapperStatusUser(user)),
-                   ()-> {throw new RuntimeException(MESSAGE_USER_NOT_FOUND);}
+                   ()-> {throw new UserNotFoundException(MESSAGE_USER_NOT_FOUND);}
                 );
     }
 
     @Override
-    public void isThereUsername(String username) throws RuntimeException {
+    public void isThereUsername(String username) {
         var isThere = userRepository.findByUsername(username);
 
         if (isThere.isPresent()) {

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface IUserService {
     List<UserResponse> getAllUsers();
-    UserResponse getUserByUsername(String username)throws AccessDeniedException;
-    UserResponse update(UserUpdate update) throws AccessDeniedException;
+    UserResponse getUserByUsername(String username);
+    UserResponse update(UserUpdate update);
     void changeUserStatus(Long id);
     void isThereUsername(String username);
 

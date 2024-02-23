@@ -107,5 +107,15 @@ public class ExceptionManager {
     return this.generalExceptionHandler(exception, request, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handlerUserNotFound(UserNotFoundException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(WithoutPermitsException.class)
+  public ResponseEntity<ErrorResponse> handlerWithoutPermitsException(WithoutPermitsException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception, request, HttpStatus.FORBIDDEN);
+  }
+
 
 }
