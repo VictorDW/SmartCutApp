@@ -10,20 +10,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionManager {
 
 
-  public ResponseEntity<ErrorResponse> generalExceptionHandler(RuntimeException exception, WebRequest request, HttpStatus httpStatus) {
+  public ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     ErrorResponse error = new ErrorResponse(
-        LocalDateTime.now(),
+        LocalDateTime.now().format(formatter),
         httpStatus.value(),
         httpStatus.getReasonPhrase(),
-        exception.getMessage(),
-        request.getDescription(false)
+        exceptionMassage
+       // request.getDescription(false)
     );
     return new ResponseEntity<>(error, httpStatus);
   }
@@ -46,7 +49,7 @@ public class ExceptionManager {
   }
 
   /**
-   * Este método permite manejar la excepción que se lanzan al momento de verificar si la request parameter es valida.
+   * Este método permite manejar la excepción que se lanzan al momento de verificar si el variable pasada por parametro es valida.
    *
    * @param exception
    * @return Retorna un ErrorArgumentResponse el cual contiene el mensaje de error
@@ -65,13 +68,12 @@ public class ExceptionManager {
 
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que las credenciales para autenticarse son incorrectas
-   * @param exception
    * @param request
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ErrorResponse> handlerBadCredential(BadCredentialsException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.UNAUTHORIZED);
+  public ResponseEntity<ErrorResponse> handlerBadCredential(WebRequest request) {
+    return this.generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -82,7 +84,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(MaterialNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerMaterialNotFound(MaterialNotFoundException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -93,7 +95,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(SupplierNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -104,17 +106,22 @@ public class ExceptionManager {
    */
   @ExceptionHandler(SupplierAlreadyExitsException.class)
   public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.CONFLICT);
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerUserNotFound(UserNotFoundException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.NOT_FOUND);
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(WithoutPermitsException.class)
   public ResponseEntity<ErrorResponse> handlerWithoutPermitsException(WithoutPermitsException exception, WebRequest request) {
-    return this.generalExceptionHandler(exception, request, HttpStatus.FORBIDDEN);
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(UsernameAlreadyExistException.class)
+  public ResponseEntity<ErrorResponse> handlerUsernameAlreadyExist(UsernameAlreadyExistException exception, WebRequest request) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
 

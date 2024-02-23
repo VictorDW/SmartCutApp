@@ -1,11 +1,8 @@
 package com.smartcut.app.Error;
 
-import java.time.LocalDateTime;
-
 public record ErrorResponse(
-    LocalDateTime localDateTime,
+    String localDateTime,
     int status,
     String error,
-    String message,
-    String path
+    String message
 ) { }
