@@ -26,7 +26,6 @@ public class ExceptionManager {
         httpStatus.value(),
         httpStatus.getReasonPhrase(),
         exceptionMassage
-       // request.getDescription(false)
     );
     return new ResponseEntity<>(error, httpStatus);
   }
@@ -68,59 +67,73 @@ public class ExceptionManager {
 
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que las credenciales para autenticarse son incorrectas
-   * @param request
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ErrorResponse> handlerBadCredential(WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerBadCredential() {
     return this.generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
   }
 
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que un material buscado no se encuentra en la BD
    * @param exception
-   * @param request
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(MaterialNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handlerMaterialNotFound(MaterialNotFoundException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerMaterialNotFound(MaterialNotFoundException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que un proveedor buscado no se encuentra en la BD
    * @param exception
-   * @param request
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(SupplierNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que un proveedor ya se encuentra registrado en la BD
    * @param exception
-   * @param request
    * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(SupplierAlreadyExitsException.class)
-  public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un usuaro no se encontrado en la BD
+   * @param exception
+   * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
   @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handlerUserNotFound(UserNotFoundException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerUserNotFound(UserNotFoundException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un usuario no tiene los permisos
+   * para consultar datos de otro usuario o modificar la información.
+   * @param exception
+   * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+
   @ExceptionHandler(WithoutPermitsException.class)
-  public ResponseEntity<ErrorResponse> handlerWithoutPermitsException(WithoutPermitsException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerWithoutPermitsException(WithoutPermitsException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.FORBIDDEN);
   }
 
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que se quiere registrar un usuario con un Username en uso.
+   * @param exception
+   * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+
   @ExceptionHandler(UsernameAlreadyExistException.class)
-  public ResponseEntity<ErrorResponse> handlerUsernameAlreadyExist(UsernameAlreadyExistException exception, WebRequest request) {
+  public ResponseEntity<ErrorResponse> handlerUsernameAlreadyExist(UsernameAlreadyExistException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
