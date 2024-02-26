@@ -16,7 +16,7 @@ public record UserResponse(
         String email,
         String phone,
         String address,
-        LocalDateTime dataRegister,
+        String dataRegister,
         Status status
 ) {
 }

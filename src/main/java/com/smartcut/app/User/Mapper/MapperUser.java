@@ -6,6 +6,7 @@ import com.smartcut.app.Jwt.DTO.AuthResponse;
 import com.smartcut.app.User.DTO.UserResponse;
 import com.smartcut.app.User.DTO.UserUpdate;
 import com.smartcut.app.User.Entity.User;
+import com.smartcut.app.Util.DateUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -55,7 +56,7 @@ public class MapperUser {
                 user.getEmail(),
                 user.getPhone(),
                 user.getAddress(),
-                user.getDateRegister(),
+                DateUtils.dateFormat(user.getDateRegister()),
                 user.getStatus()
         );
     }
