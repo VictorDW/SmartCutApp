@@ -51,11 +51,14 @@ public class SecurityConfig {
                 sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-          /* .exceptionHandling(exceptionConfig ->
-                exceptionConfig.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(permissionsAccessDeniedHandler))
-
-           */
+            .exceptionHandling(exceptionConfig ->
+                /*
+                * Como las excepciones de autenticación y autorización se da en la cadena de filtros, Se deben agregar las implementaciones
+                * personalizadas para que asi sean estas las que se usen al momento de dar respuesta al cliente.
+                */
+                exceptionConfig.accessDeniedHandler(permissionsAccessDeniedHandler)
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            )
             /*
             * con una expresión de método de referencia podemos llamar al método,
             * es equivalente a realizar la lambda, authRequestConfig -> httpRequestPath(authRequestConfig)
@@ -77,6 +80,7 @@ public class SecurityConfig {
        final String SUPPLIER_PATH = "/api/supplier";
        final String MATERIALS_PATH = "/api/materials";
        final String USER_PATH = "/api/user";
+       final String STATUS_PATCH = "/status/{id}";
 
 
        authRequestConfig.requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
@@ -85,19 +89,19 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, USER_PATH).hasAuthority(Permission.READ_ALL_USER.name())
                 .requestMatchers(HttpMethod.GET, USER_PATH+"/{username}").hasAuthority(Permission.READ_ONE_USER.name())
                 .requestMatchers(HttpMethod.PUT, USER_PATH).hasAuthority(Permission.UPDATE_USER.name())
-                .requestMatchers(HttpMethod.DELETE, USER_PATH+"/status/{id}").hasAuthority(Permission.CHANGE_USER_STATUS.name())
+                .requestMatchers(HttpMethod.DELETE, USER_PATH+STATUS_PATCH).hasAuthority(Permission.CHANGE_USER_STATUS.name())
 
                 .requestMatchers(HttpMethod.POST, SUPPLIER_PATH).hasAuthority(Permission.CREATE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER_PATH).hasAuthority(Permission.READ_ALL_SUPPLIER.name())
                 .requestMatchers(HttpMethod.GET, SUPPLIER_PATH+"/{cedula}").hasAuthority(Permission.READ_ONE_SUPPLIER.name())
                 .requestMatchers(HttpMethod.PUT, SUPPLIER_PATH).hasAuthority(Permission.UPDATE_SUPPLIER.name())
-                .requestMatchers(HttpMethod.DELETE, SUPPLIER_PATH+"/status/{id}").hasAuthority(Permission.DELETE_SUPPLIER.name())
+                .requestMatchers(HttpMethod.DELETE, SUPPLIER_PATH+STATUS_PATCH).hasAuthority(Permission.DELETE_SUPPLIER.name())
 
                 .requestMatchers(HttpMethod.POST, MATERIALS_PATH).hasAuthority(Permission.CREATE_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS_PATH).hasAuthority(Permission.READ_ALL_MATERIALS.name())
                 .requestMatchers(HttpMethod.GET, MATERIALS_PATH+"/{code}").hasAuthority(Permission.READ_ONE_MATERIALS.name())
                 .requestMatchers(HttpMethod.PUT, MATERIALS_PATH).hasAuthority(Permission.UPDATE_MATERIALS.name())
-                .requestMatchers(HttpMethod.DELETE, MATERIALS_PATH+"/status/{id}").hasAuthority(Permission.DELETE_MATERIALS.name())
+                .requestMatchers(HttpMethod.DELETE, MATERIALS_PATH+STATUS_PATCH).hasAuthority(Permission.DELETE_MATERIALS.name())
                 .anyRequest().authenticated();
     }
 }
