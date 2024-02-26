@@ -7,6 +7,7 @@ import com.smartcut.app.Domain.Materials.Entity.Materials;
 import com.smartcut.app.Domain.Status;
 import com.smartcut.app.Domain.Supplier.DTO.SupplierResponseBasic;
 import com.smartcut.app.Domain.Supplier.Entity.Supplier;
+import com.smartcut.app.Util.DateUtils;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class MapperMaterials{
 
     public static Materials mapperMaterialsRequestToMaterials(MaterialsRequest request, Supplier supplier) {
 
-        Materials materials = new Materials();
+        /* Materials materials = new Materials();
 
         materials.setCode(request.code());
         materials.setSupplier(supplier);
@@ -28,9 +29,22 @@ public class MapperMaterials{
         materials.setUnitPrice(request.unitPrice());
         materials.setQuantity(request.quantity());
         materials.setDateRegister(LocalDateTime.now());
-        materials.setStatus(Status.ACTIVE);
+        materials.setStatus(Status.ACTIVE);*/
 
-        return materials;
+        return Materials
+            .builder()
+            .code(request.code())
+            .supplier(supplier)
+            .name(request.name())
+            .type(request.type())
+            .width(request.width())
+            .height(request.height())
+            .unitPrice(request.unitPrice())
+            .quantity(request.quantity())
+            .dateRegister(LocalDateTime.now())
+            .status(Status.ACTIVE)
+            .build();
+
     }
 
     public static MaterialsResponse mapperMaterialsToMaterialsResponse(Materials materials) {
@@ -51,7 +65,7 @@ public class MapperMaterials{
                 materials.getHeight(),
                 materials.getUnitPrice(),
                 materials.getQuantity(),
-                materials.getDateRegister()
+                DateUtils.dateFormat(materials.getDateRegister())
         );
     }
 

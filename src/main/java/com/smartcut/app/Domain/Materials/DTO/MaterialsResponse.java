@@ -15,6 +15,6 @@ public record MaterialsResponse(
         Float height,
         BigDecimal unitPrice,
         Integer quantity,
-        LocalDateTime dataRegister
+        String dataRegister
 ) {
 }
