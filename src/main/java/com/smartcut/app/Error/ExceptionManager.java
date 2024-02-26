@@ -1,28 +1,25 @@
 package com.smartcut.app.Error;
 
+import com.smartcut.app.Util.DateUtils;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class ExceptionManager {
 
 
-  public ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+  public static ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {
 
     ErrorResponse error = new ErrorResponse(
-        LocalDateTime.now().format(formatter),
+        DateUtils.dateFormat(LocalDateTime.now()),
         httpStatus.value(),
         httpStatus.getReasonPhrase(),
         exceptionMassage
@@ -48,7 +45,7 @@ public class ExceptionManager {
   }
 
   /**
-   * Este método permite manejar la excepción que se lanzan al momento de verificar si el variable pasada por parametro es valida.
+   * Este método permite manejar la excepción que se lanzan al momento de verificar si la variable pasada por parametro es válida.
    *
    * @param exception
    * @return Retorna un ErrorArgumentResponse el cual contiene el mensaje de error
@@ -71,7 +68,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handlerBadCredential() {
-    return this.generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
+    return generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -81,7 +78,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(MaterialNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerMaterialNotFound(MaterialNotFoundException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -91,7 +88,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(SupplierNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -101,7 +98,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(SupplierAlreadyExitsException.class)
   public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
   /**
@@ -111,7 +108,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorResponse> handlerUserNotFound(UserNotFoundException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -123,7 +120,7 @@ public class ExceptionManager {
 
   @ExceptionHandler(WithoutPermitsException.class)
   public ResponseEntity<ErrorResponse> handlerWithoutPermitsException(WithoutPermitsException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.FORBIDDEN);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.FORBIDDEN);
   }
 
   /**
@@ -134,8 +131,7 @@ public class ExceptionManager {
 
   @ExceptionHandler(UsernameAlreadyExistException.class)
   public ResponseEntity<ErrorResponse> handlerUsernameAlreadyExist(UsernameAlreadyExistException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
-
 
 }
