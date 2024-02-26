@@ -18,19 +18,6 @@ public class MapperMaterials{
 
     public static Materials mapperMaterialsRequestToMaterials(MaterialsRequest request, Supplier supplier) {
 
-        /* Materials materials = new Materials();
-
-        materials.setCode(request.code());
-        materials.setSupplier(supplier);
-        materials.setName(request.name());
-        materials.setType(request.type());
-        materials.setWidth(request.width());
-        materials.setHeight(request.height());
-        materials.setUnitPrice(request.unitPrice());
-        materials.setQuantity(request.quantity());
-        materials.setDateRegister(LocalDateTime.now());
-        materials.setStatus(Status.ACTIVE);*/
-
         return Materials
             .builder()
             .code(request.code())

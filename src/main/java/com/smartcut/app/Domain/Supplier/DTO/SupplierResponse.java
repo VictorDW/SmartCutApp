@@ -9,7 +9,7 @@ public record SupplierResponse(
         String cedula,
         String phone,
         String address,
-        LocalDateTime dataRegister,
+        String dataRegister,
         String description
 ) {
 }

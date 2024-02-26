@@ -5,6 +5,7 @@ import com.smartcut.app.Domain.Supplier.DTO.SupplierRequest;
 import com.smartcut.app.Domain.Supplier.DTO.SupplierResponse;
 import com.smartcut.app.Domain.Supplier.DTO.SupplierUpdate;
 import com.smartcut.app.Domain.Supplier.Entity.Supplier;
+import com.smartcut.app.Util.DateUtils;
 
 import java.time.LocalDateTime;
 
@@ -38,7 +39,7 @@ public class MapperSupplier {
                 supplier.getCedula(),
                 supplier.getPhone(),
                 supplier.getAddress(),
-                supplier.getDateRegister(),
+                DateUtils.dateFormat(supplier.getDateRegister()),
                 supplier.getDescription()
         );
     }
