@@ -72,7 +72,7 @@ public class UserServiceImpl implements IUserService {
                 );
     }
 
-    private Boolean isUsernameAlreadyTaken(String username) {
+    private boolean isUsernameAlreadyTaken(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 

@@ -7,10 +7,11 @@ import com.smartcut.app.User.Entity.User;
 import com.smartcut.app.User.Mapper.MapperUser;
 import com.smartcut.app.User.Repository.UserRepository;
 import com.smartcut.app.User.Service.IUserService;
+import com.smartcut.app.Util.TemporaryTokenStorage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,9 @@ public class AuthService {
     private final IUserService userService;
 
     /**
-     * Este método permite autenticar un usuario registrado en la base de datos
+     * Este método permite autenticar un usuario registrado en la base de datos, posterior a esto almacenar el token en una lista blanca
      * @param request
-     * @return el token generado con los datos del usuario autenticado + datos basico de este
+     * @return un objecto AuthResponse el cual contiene el token generado con los datos del usuario autenticado + datos basico de este
      */
     public AuthResponse login(LoginRequest request) {
 
@@ -40,7 +41,7 @@ public class AuthService {
         * esta implementación es fundamental para la autenticación, ya que permite almacenar los datos del usuario
         * sin autenticar, para posteriormente contener el usuario ya autenticado
         */
-        var usernameAuthentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        var userAuthenticate = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
         /*
         * internamente en el método authenticate, se valida que el usuario si exista en la base de datos, luego
@@ -49,12 +50,16 @@ public class AuthService {
         * de su constructor, recibe el usuario de la base de datos, y sus permisos, a su vez al retornar esa instancia
         * como un Authentication, se puede obtener el usuario autenticado con el getPrincipal.
         */
-        Authentication userAuthenticated = authenticationManager.authenticate(usernameAuthentication);
+        Authentication authenticatedUser = authenticationManager.authenticate(userAuthenticate);
 
-       return MapperUser.mapperUserAndTokenToAuthResponse(
-                    (User) userAuthenticated.getPrincipal(),
-                    jwtService.getToken((UserDetails) userAuthenticated.getPrincipal())
-       );
+        User authUser = (User) authenticatedUser.getPrincipal();
+
+        var response = MapperUser.mapperUserAndTokenToAuthResponse(authUser, jwtService.getToken(authUser));
+
+        //Se almacena el token creado temporalmente en una lista blanca
+        TemporaryTokenStorage.addTokenToWhiteList(authUser.getUsername(), response.getToken());
+
+        return response;
     }
 
     /**
@@ -70,6 +75,21 @@ public class AuthService {
         var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);
 
+    }
+
+    /**
+     * Este método permite realizar la gestión para el cierre de sessión, en el que se inhabilita el token utilizado
+     * por el usuario para acceder a los endpoints
+     */
+    public void logout() {
+
+        String subject = ((User) SecurityContextHolder.getContext()
+                                .getAuthentication()
+                                .getPrincipal())
+                                .getUsername();
+
+        String token = TemporaryTokenStorage.getTokenOfWhiteList(subject);
+        TemporaryTokenStorage.addTokenToBlackList(subject, token);
     }
 
 

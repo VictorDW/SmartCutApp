@@ -5,16 +5,13 @@ import com.smartcut.app.Auth.DTO.LoginRequest;
 import com.smartcut.app.Auth.DTO.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.smartcut.app.Jwt.DTO.AuthResponse;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -32,7 +29,13 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody @Valid RegisterRequest request){
         authService.register(request);
-        return new ResponseEntity<>("Registration Made", HttpStatus.CREATED);
+        return new ResponseEntity<>("¡Registro exitoso!", HttpStatus.CREATED);
+    }
+
+    @PostMapping("logout")
+    public ResponseEntity<String> logout() {
+        authService.logout();
+        return new ResponseEntity<>("Session cerrada", HttpStatus.ACCEPTED);
     }
     
 }
