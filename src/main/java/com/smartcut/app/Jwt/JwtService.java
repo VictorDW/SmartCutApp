@@ -7,10 +7,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.smartcut.app.Error.ErrorValidationTokenException;
+import com.smartcut.app.Util.TemporaryTokenStorage;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.smartcut.app.User.Entity.User;
@@ -31,6 +33,12 @@ public class JwtService {
     @Value("${security.jwt.expiration-minutes}")// se asigna el tiempo de expiración de token
     private  Long EXPIRATION_MINUTES;
 
+    @Getter //getter solo para este atributo por medio de loombok
+    private String username;
+    private Claims claims;
+    private final Logger loggerClass = LoggerFactory.getLogger(JwtService.class);
+
+
     //Métodos necesarios para la Autenticación
 
     /**
@@ -39,8 +47,8 @@ public class JwtService {
      * @param user
      * @return el token
      */
-    public String getToken(UserDetails user) {
-        return getToken(extraClaims((User) user), user);
+    public String getToken(User user) {
+        return this.getToken(this.extraClaims(user), user);
     }
 
     /**
@@ -50,7 +58,7 @@ public class JwtService {
      * @param user
      * @return el token
      */
-    private String getToken(Map<String, ?> extraClaims, UserDetails user) {
+    private String getToken(Map<String, ?> extraClaims, User user) {
 
         return Jwts
         .builder()
@@ -66,7 +74,7 @@ public class JwtService {
      * Este método permite expresar la fecha en la que queremos expire el token
      * @return la fecha de expiración
      */
-    private  Date expirationDate() {
+    private Date expirationDate() {
         return new Date(System.currentTimeMillis() + (EXPIRATION_MINUTES * 60 * 1000));
     }
 
@@ -98,77 +106,62 @@ public class JwtService {
     //Métodos necesarios para la Autorización
 
     /**
-     * Este método permite validar si el token está correcto, tanto en los datos del usuario autenticado,
-     * asi como la expiración de este
+     * Este método permite validar si el token está correcto, y que no se encuentre en la lista de tokens cancelados,
      * @param token
-     * @param userDetails
      * @return Booleano el cual permite corroborar la valides del token
      */
-    public boolean isValidToken(String token, UserDetails userDetails) {
-        final String username = getUserNameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpiration(token));
+    public boolean isValidToken(String token) {
+        this.checkTokenValidity(token);
+        return !TemporaryTokenStorage.isTokenCancellation(this.getUserNameFromToken(), token);
     }
 
     /**
-     * Este método permite obtener el username del usuario, extrayéndolo del token.
-     * @param token
+     * Este método permite obtener el username del usuario, extrayéndolo del Claim.
      * @return el username del usuario autenticado
      */
-    public String getUserNameFromToken(String token) {
-       // return getClaim(token, claims -> claims.getSubject());
-        return getClaim(token, Claims::getSubject);
-    }
-
-    /**
-     * Este método permite obtener los Claims, después de la validación de la correcta estructura del token enviado.
-     * @param token
-     * @return la instancia de Claims, el cual contiene todos los agregados en la creación del token
-     */
-    private Claims getallClaims(String token)  {
-        try  {
-            return Jwts
-                .parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        }catch (JwtException e) {
-            //Se capturan las excepciones propies de Jwts y se crea una personalizada al momento que se lanzan
-            throw new ErrorValidationTokenException("TOKEN INVALIDO O EXPIRADO!");
-        }
-
+    private String getUserNameFromToken() {
+        // return getClaim(token, claims -> claims.getSubject());
+        username = getClaim(Claims::getSubject);
+        return username;
     }
 
     /**
      * Este método permite obtener un claim, el cual es especificado en una lambda, a partir de suministrar la
-     * instancia del Claims
-     * @param token
+     * instancia de Claims
      * @param extractClaim
      * @return un Tipo de Claim el cual dependerá de la lambda enviada por parámetro
      * @param <T>
      */
-    private <T> T getClaim(String token, Function<Claims, T> extractClaim) {
-        Claims claims = getallClaims(token);
+    private <T> T getClaim(Function<Claims, T> extractClaim) {
         return extractClaim.apply(claims);
     }
 
     /**
-     * Este método permite obtener la fecha de expiración, extraída desde el token
+     * Este método permite revisar si el token es valido, en caso de que se capture un excepción, se registra el logger con el mensaje de error,
+     * por ende si surge una captura de excepción se rompe el flujo, por otro lado en caso de que este bien el token, se procede a guardar los Claims
+     * del token
      * @param token
-     * @return la fecha de expiración del token
      */
-    private Date getExpiration(String token) {
-        return getClaim(token, Claims::getExpiration);
+    private void checkTokenValidity(String token) {
+        try {
+            claims = this.tokenAnalyzer(token).getBody();
+        } catch (JwtException e) {
+            loggerClass.error("TOKEN INVALIDO: %s".formatted(e.getMessage()));
+            throw new ErrorValidationTokenException(e.getMessage());
+        }
     }
 
     /**
-     * Este método permite validar si la fecha de expiración del token, es menor a la fecha actual
+     * Este método haciendo uso de la libreria Jwts, permite analizar y validar el token que se envia por parametro,
      * @param token
-     * @return un Booleano que confirma si el token ya expiro
+     * @return un objecto Jws<Claims> que contiene la información sobre la firma y los claims, en caso de que surga un error
+     * se lanza una excepción dependiendo del error encontrado.
      */
-    private Boolean isTokenExpiration(String token) {
-        return getExpiration(token).before(new Date());
+    private Jws<Claims> tokenAnalyzer(String token) {
+        return Jwts
+            .parserBuilder()
+            .setSigningKey(getKey())
+            .build()
+            .parseClaimsJws(token);
     }
-
 }
