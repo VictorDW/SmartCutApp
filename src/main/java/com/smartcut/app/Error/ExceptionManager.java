@@ -5,6 +5,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,6 +70,15 @@ public class ExceptionManager {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handlerBadCredential() {
     return generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
+  }
+
+  /**
+   * Este método permite manejar la excepción que se lanza en el momento en que un usuario deshabilitado intenta autenticarse
+   * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
+   */
+  @ExceptionHandler(DisabledException.class)
+  public ResponseEntity<ErrorResponse> handlerDisableException() {
+    return ExceptionManager.generalExceptionHandler("El Usuario esta Deshabilitado", HttpStatus.UNAUTHORIZED);
   }
 
   /**

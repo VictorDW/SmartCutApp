@@ -137,8 +137,8 @@ public class JwtService {
     }
 
     /**
-     * Este método permite revisar si el token es valido, en caso de que se capture un excepción, se registra el logger con el mensaje de error,
-     * por ende si surge una captura de excepción se rompe el flujo, por otro lado en caso de que este bien el token, se procede a guardar los Claims
+     * Este método permite revisar si el token es válido, en caso de que se capture una excepción, se registra el logger con el mensaje de error,
+     * por ende si surge una captura de excepción se rompe el flujo, por otro lado, en caso de que este bien el token, se procede a guardar los Claims
      * del token
      * @param token
      */

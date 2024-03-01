@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        updateSecurityContex(extractAuthenticatedUserFromToken(token, request));
+        updateSecurityContext(extractAuthenticatedUserFromToken(token, request));
 
         filterChain.doFilter(request, response);
     }
@@ -93,7 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * Este método se encarga de actualizar el authentication en el SecurityContext
      * @param authenticatedUser
      */
-    private void updateSecurityContex(Authentication authenticatedUser) {
+    private void updateSecurityContext(Authentication authenticatedUser) {
         /* Se setea el usuario autenticado y autorizado en el SecurityContext,
          * en caso de que esto no succeda por la validación del token
          * el filtro AuthenticationFilter lanza una excepción que posteriormente se personaliza con el AuthenticationEntryPoint

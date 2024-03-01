@@ -14,7 +14,7 @@ public class TemporaryTokenStorage {
   private static final Map<String, String> tokenBlackListStorage = new HashMap<>();
 
   /**
-   * Permite registra el token generado al momento de iniciar sesión, de acuerdo al usuario que se autentica
+   * Permite registra el token generado al momento de iniciar sesión, de acuerdo al usuario que sé auténtica
    * @param subject
    * @param token
    */
@@ -41,7 +41,7 @@ public class TemporaryTokenStorage {
   }
 
   /**
-   * Valida si el token obtenido de la lista negra con el username, es igual al que se envia,
+   * Válida si el token obtenido de la lista negra con el username, es igual al que se envia,
    * de ser así se considera un toquen inhabilitado para usarse.
    * @param subject
    * @param token
