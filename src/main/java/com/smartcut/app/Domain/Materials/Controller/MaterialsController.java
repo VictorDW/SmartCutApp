@@ -46,7 +46,7 @@ public class MaterialsController {
      * @return una ResponseEntity con la información de los materiales y un código de estado HTTP 200 (OK).
      */
     @GetMapping("/{code}")
-    public ResponseEntity<List<MaterialsResponse>> getByIdMaterials(@PathVariable
+    public ResponseEntity<List<MaterialsResponse>> getMaterialsByCode(@PathVariable
                                                               @Pattern(regexp = "^\\d+$", message = "{message.only.numbers}")
                                                               @Size(min = 4, max = 4, message = "{message.code.size}")
                                                               String code) {
