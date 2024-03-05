@@ -12,7 +12,8 @@ public record ErrorArgumentResponse(
     this(error.getField(), error.getDefaultMessage());
   }
 
-  public ErrorArgumentResponse(ConstraintViolation error) {
+  public ErrorArgumentResponse(ConstraintViolation<?> error) {
     this("Parámetro de solicitud", error.getMessage());
   }
+
 }

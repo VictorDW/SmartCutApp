@@ -9,6 +9,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,6 +62,11 @@ public class ExceptionManager {
                           .get();
 
     return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ErrorArgumentResponse> handlerTypeInvalid(MethodArgumentTypeMismatchException exception) {
+    return ResponseEntity.badRequest().body(new ErrorArgumentResponse(exception.getName(), "Error en el tipo de dato"));
   }
 
   /**

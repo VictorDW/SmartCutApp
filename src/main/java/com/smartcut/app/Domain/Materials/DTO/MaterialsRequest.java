@@ -30,7 +30,7 @@ public record MaterialsRequest(
         @NotNull(message = "{message.material.height}")
         Float height,
 
-        @NotNull(message = "message.price.material")
+        @NotNull(message = "{message.price.material}")
         @DecimalMin(value = "100", message = "{message.invalid.price}")
         @DecimalMax(value = "999.999", message = "{message.invalid.price}")
         BigDecimal unitPrice,
