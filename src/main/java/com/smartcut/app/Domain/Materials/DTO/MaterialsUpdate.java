@@ -5,41 +5,41 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
 public record MaterialsUpdate(
-        @NotNull(message = "Se requiere el id del material")
+        @NotNull(message = "${message.material.id}")
         Long id,
 
-        @NotBlank(message = "El campo no puede estar vacio")
-        @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
-        @Size(min = 4, max = 4, message = "Debe contener 4 digitos")
+        @NotBlank(message = "${message.empty.field}")
+        @Pattern(regexp = "^\\d+$", message = "${message.only.numbers}")
+        @Size(min = 4, max = 4, message = "${message.code.size}")
         String code,
 
-        @NotNull(message = "Se requiere el id del proveedor")
+        @NotNull(message = "${message.required.idSupplier}")
         Long IDSupplier,
 
-        @NotBlank(message = "El campo no puede estar vacio")
-        @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-        @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+        @NotBlank(message = "${message.empty.field}")
+        @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+        @Size(min = 4, max = 20, message = "${message.default.size}")
         String name,
 
-        @NotBlank(message = "El campo no puede estar vacio")
-        @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-        @Size(min = 2, max = 10, message = "Debe contener minimo 2 caracteres y maximo 10")
+        @NotBlank(message = "${message.empty.field}")
+        @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+        @Size(min = 2, max = 10, message = "${message.type.size}")
         String type,
 
-        @NotNull(message = "Se requiere definir el ancho")
+        @NotNull(message = "${message.material.width}")
         Float width,
 
-        @NotNull(message = "Se requiere definir el alto")
+        @NotNull(message = "${message.material.height}")
         Float height,
 
-        @NotNull(message = "Se requiere definir el costo del material por unidad")
-        @DecimalMin(value = "0.00", message = "Error en el formato del precio")
-        @DecimalMax(value = "999.999", message = "Error en el formato del precio")
+        @NotNull(message = "${message.price.material}")
+        @DecimalMin(value = "0.00", message = "${Error en el formato del precio}")
+        @DecimalMax(value = "999.999", message = "${Error en el formato del precio}")
         BigDecimal unitPrice,
 
-        @NotNull(message = "Se requiere definir la cantidad")
-        @Min(value = 1, message = "Error en el formato de la cantidad")
-        @Max(value = 999, message = "Error en el formato de la cantidad")
+        @NotNull(message = "${message.quantity.material}")
+        @Min(value = 1, message = "${message.invalid.quantity}")
+        @Max(value = 999, message = "${message.invalid.quantity}")
         Integer quantity
 ) {
 }

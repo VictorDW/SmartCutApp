@@ -3,43 +3,43 @@ package com.smartcut.app.User.DTO;
 import jakarta.validation.constraints.*;
 
 public record UserUpdate(
-    @NotNull(message = "Se requiere el id del usuario")
+    @NotNull(message = "${message.user.id}")
     Long id,
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "No debe contener caracteres especiales")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "${message.special.character}")
+    @Size(min = 4, max = 20, message = "${message.default.size}")
     String username,
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z0-9@.]+$", message = "No debe contener caracteres especiales diferentes al @ y el .")
-    @Size(min = 4, max = 15, message = "Debe contener minimo 4 caracteres y maximo 15")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z0-9@.]+$", message = "${message.special.character.password}")
+    @Size(min = 4, max = 15, message = "${message.password.size}")
     String newPassword,
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+    @Size(min = 4, max = 20, message = "${message.default.size}")
     String firstName,
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 30")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+    @Size(min = 4, max = 20, message = "${message.lastname.size}")
     String lastName,
 
-    @Email
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Email(message = "${message.bad.email}")
+    @NotBlank(message = "${message.empty.field}")
     String email,
 
-    @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
-    @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Pattern(regexp = "^\\d+$", message = "${message.only.numbers}")
+    @Size(min = 8, max = 11, message = "${message.cedula.size}")
+    @NotBlank(message = "${message.empty.field}")
     String cedula,
 
-    @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
-    @Size(min = 10, max = 10, message = "Error en el formato del numero de celular")
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Pattern(regexp = "^\\d+$", message = "${message.only.numbers}")
+    @Size(min = 10, max = 10, message = "${message.phone.size}")
+    @NotBlank(message = "${message.empty.field}")
     String phone,
 
-    @NotBlank(message = "El campo no puede estar vacio")
+    @NotBlank(message = "${message.empty.field}")
     String address
 ) { }

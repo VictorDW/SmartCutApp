@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 public class LoginRequest {
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "No debe contener caracteres especiales")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "${message.special.character}")
+    @Size(min = 4, max = 20, message = "${message.default.size}")
     private String username;
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z0-9@.]+$", message = "No debe contener caracteres especiales diferentes al @ y el .")
-    @Size(min = 4, max = 15, message = "Debe contener minimo 4 caracteres y maximo 15")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z0-9@.]+$", message = "${message.special.character.password}")
+    @Size(min = 4, max = 15, message = "${message.password.size}")
     private String password;
 }

@@ -6,31 +6,31 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record SupplierRequest(
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+    @Size(min = 4, max = 20, message = "${message.default.size}")
     String firstName,
 
-    @NotBlank(message = "El campo no puede estar vacio")
-    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "Solo debe contener letras")
-    @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
+    @NotBlank(message = "${message.empty.field}")
+    @Pattern(regexp = "^[A-Za-z\\s]+$", message = "${message.only.letters}")
+    @Size(min = 4, max = 20, message = "${message.lastname.size}")
     String lastName,
 
-    @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
-    @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Pattern(regexp = "^\\d+$", message = "${message.only.numbers}")
+    @Size(min = 8, max = 11, message = "${message.cedula.size}")
+    @NotBlank(message = "${message.empty.field}")
     String cedula,
 
-    @Email
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Email(message = "${message.bad.email}")
+    @NotBlank(message = "${message.empty.field}")
     String email,
 
-    @Pattern(regexp = "^\\d+$", message = "Solo debe contener numeros")
-    @Size(min = 10, max = 10, message = "Error en el formato del numero de celular")
-    @NotBlank(message = "El campo no puede estar vacio")
+    @Pattern(regexp = "^\\d+$", message = "${message.only.numbers}")
+    @Size(min = 10, max = 10, message = "${message.phone.size}")
+    @NotBlank(message = "${message.empty.field}")
     String phone,
 
-    @NotBlank(message = "El campo no puede estar vacio")
+    @NotBlank(message = "${message.empty.field}")
     String address,
     String description
 
