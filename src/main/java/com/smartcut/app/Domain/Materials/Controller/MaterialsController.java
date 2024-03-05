@@ -47,8 +47,8 @@ public class MaterialsController {
      */
     @GetMapping("/{code}")
     public ResponseEntity<List<MaterialsResponse>> getByIdMaterials(@PathVariable
-                                                              @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
-                                                              @Size(min = 4, max = 4, message = "Debe contener 4 digitos")
+                                                              @Pattern(regexp = "^\\d+$", message = "{message.only.numbers}")
+                                                              @Size(min = 4, max = 4, message = "{message.code.size}")
                                                               String code) {
         return ResponseEntity.ok(materialsService.getMaterialsByCode(code));
     }
@@ -82,7 +82,7 @@ public class MaterialsController {
      * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
      */
     @DeleteMapping("/status/{id}")
-    public ResponseEntity<HttpHeaders> changeMaterialState(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+    public ResponseEntity<HttpHeaders> changeMaterialState(@PathVariable @Max(value = 999, message = "{message.invalid.id}") Long id) {
         materialsService.changeMaterialState(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

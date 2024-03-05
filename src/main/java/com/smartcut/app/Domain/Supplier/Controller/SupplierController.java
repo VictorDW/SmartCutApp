@@ -51,8 +51,8 @@ public class SupplierController {
      */
     @GetMapping("/{cedula}")
     public ResponseEntity<SupplierResponse> getSupplierByCedula(@PathVariable
-                                                      @Pattern(regexp = "^\\d+$", message = "Solo debe contener solo numeros")
-                                                      @Size(min = 8, max = 11, message = "Debe contener minimo 8 digitos y maximo 11")
+                                                      @Pattern(regexp = "^\\d+$", message = "{message.only.numbers}")
+                                                      @Size(min = 8, max = 11, message = "{message.cedula.size}")
                                                       String cedula) {
 
         return ResponseEntity.ok(supplierService.getSupplierByCedula(cedula));
@@ -86,7 +86,7 @@ public class SupplierController {
      * @return ResponseEntity sin contenido y un código de estado HTTP 204 (No Content) si la desactivación fue exitosa.
      */
     @DeleteMapping("/status/{id}")
-    public ResponseEntity<HttpHeaders> changeSupplierStatus(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+    public ResponseEntity<HttpHeaders> changeSupplierStatus(@PathVariable @Max(value = 999, message = "{message.invalid.id}") Long id) {
         supplierService.changeSupplierStatus(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

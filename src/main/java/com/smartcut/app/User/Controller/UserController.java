@@ -26,9 +26,9 @@ public class UserController {
 
     @GetMapping("/verify/{username}")
     public ResponseEntity<String> isThereUsername(@PathVariable
-                                                       @Pattern(regexp = "^[A-Za-z0-9]+$", message = "No debe contener caracteres especiales")
-                                                       @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
-                                                       String username) {
+                                         @Pattern(regexp = "^[A-Za-z0-9]+$", message = "{message.special.character}")
+                                         @Size(min = 4, max = 20, message = "{message.default.size}")
+                                         String username) {
 
       var response = userService.checkUsernameAvailability(username);
       String message = (String) response.get(0);
@@ -43,9 +43,9 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<UserResponse> getUserByUsername(@PathVariable
-                                                            @Pattern(regexp = "^[A-Za-z0-9]+$", message = "No debe contener caracteres especiales")
-                                                            @Size(min = 4, max = 20, message = "Debe contener minimo 4 caracteres y maximo 20")
-                                                            String username) {
+                                                 @Pattern(regexp = "^[A-Za-z0-9]+$", message = "{message.special.character}")
+                                                 @Size(min = 4, max = 20, message = "{message.default.size}")
+                                                 String username) {
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @DeleteMapping("/status/{id}")
-    public ResponseEntity<HttpHeaders> changeUserStatus(@PathVariable @Max(value = 999, message = "ID invalido") Long id) {
+    public ResponseEntity<HttpHeaders> changeUserStatus(@PathVariable @Max(value = 999, message = "{message.invalid.id}") Long id) {
         userService.changeUserStatus(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
