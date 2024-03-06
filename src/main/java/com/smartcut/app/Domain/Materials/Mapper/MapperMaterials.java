@@ -10,6 +10,7 @@ import com.smartcut.app.Domain.Supplier.Entity.Supplier;
 import com.smartcut.app.Util.DateUtils;
 import org.springframework.lang.Nullable;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
@@ -27,7 +28,7 @@ public class MapperMaterials{
             .type(request.type())
             .width(request.width())
             .height(request.height())
-            .unitPrice(request.unitPrice())
+            .unitPrice(formattedPrice(request.unitPrice()))
             .quantity(request.quantity())
             .dateRegister(LocalDateTime.now())
             .status(Status.ACTIVE)
@@ -66,7 +67,7 @@ public class MapperMaterials{
         materials.setType(update.type());
         materials.setWidth(update.width());
         materials.setHeight(update.height());
-        materials.setUnitPrice(update.unitPrice());
+        materials.setUnitPrice(formattedPrice(update.unitPrice()));
         materials.setQuantity(update.quantity());
 
         return materials;
@@ -76,5 +77,10 @@ public class MapperMaterials{
         Status newStatusSupplier = (materials.getStatus().equals(Status.ACTIVE)) ? Status.INACTIVE : Status.ACTIVE;
         materials.setStatus(newStatusSupplier);
         return materials;
+    }
+
+    private static BigDecimal formattedPrice(BigDecimal price) {
+        String convertPrice = price.toString().replace(".", "");
+        return new BigDecimal(convertPrice);
     }
 }

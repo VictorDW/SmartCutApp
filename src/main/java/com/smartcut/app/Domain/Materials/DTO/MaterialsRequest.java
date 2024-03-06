@@ -1,5 +1,6 @@
 package com.smartcut.app.Domain.Materials.DTO;
 
+import com.smartcut.app.Domain.Materials.Util.DecimalPesos;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -31,8 +32,7 @@ public record MaterialsRequest(
         Float height,
 
         @NotNull(message = "{message.price.material}")
-        @DecimalMin(value = "100", message = "{message.invalid.price}")
-        @DecimalMax(value = "999.999", message = "{message.invalid.price}")
+        @DecimalPesos
         BigDecimal unitPrice,
 
         @NotNull(message = "{message.quantity.material}")
