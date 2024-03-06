@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 public record MaterialsUpdate(
         @NotNull(message = "{message.material.id}")
+        @Max(value = 999, message = "{message.invalid.id}")
         Long id,
 
         @NotBlank(message = "{message.empty.field}")
@@ -34,7 +35,7 @@ public record MaterialsUpdate(
 
         @NotNull(message = "{message.price.material}")
         @DecimalMin(value = "100", message = "{message.invalid.price}")
-        @DecimalMax(value = "999.999", message = "{message.invalid.price}")
+        @DecimalMax(value = "999999", message = "{message.invalid.price}")
         BigDecimal unitPrice,
 
         @NotNull(message = "{message.quantity.material}")

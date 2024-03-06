@@ -1,13 +1,11 @@
 package com.smartcut.app.Domain.Supplier.DTO;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record SupplierUpdate(
 
         @NotNull(message = "{message.supplier.id}")
+        @Max(value = 999, message = "{message.invalid.id}")
         Long id,
 
         @NotBlank(message = "{message.empty.field}")

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 
 public record UserUpdate(
     @NotNull(message = "{message.user.id}")
+    @Max(value = 999, message = "{message.invalid.id}")
     Long id,
 
     @NotBlank(message = "{message.empty.field}")
