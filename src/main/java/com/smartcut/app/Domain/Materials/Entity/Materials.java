@@ -41,7 +41,7 @@ public class Materials {
     @Column(nullable = false)
     private Float height;
 
-    @Column(name = "unit_price", nullable = false, precision = 10, scale = 3)
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
     @Column(nullable = false)

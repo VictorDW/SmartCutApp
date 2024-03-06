@@ -10,6 +10,7 @@ import com.smartcut.app.Domain.Supplier.Entity.Supplier;
 import com.smartcut.app.Util.DateUtils;
 import org.springframework.lang.Nullable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 public class MapperMaterials{
@@ -37,22 +38,23 @@ public class MapperMaterials{
     public static MaterialsResponse mapperMaterialsToMaterialsResponse(Materials materials) {
 
         var supplier = materials.getSupplier();
+        DecimalFormat formatCOP = new DecimalFormat("#,##0.00");
 
         return new MaterialsResponse(
-                materials.getId(),
-                materials.getCode(),
-                new SupplierResponseBasic(
-                        supplier.getFirstName(),
-                        supplier.getLastName(),
-                        supplier.getPhone()
-                ),
-                materials.getName(),
-                materials.getType(),
-                materials.getWidth(),
-                materials.getHeight(),
-                materials.getUnitPrice(),
-                materials.getQuantity(),
-                DateUtils.dateFormat(materials.getDateRegister())
+            materials.getId(),
+            materials.getCode(),
+            new SupplierResponseBasic(
+                supplier.getFirstName(),
+                supplier.getLastName(),
+                supplier.getPhone()
+            ),
+            materials.getName(),
+            materials.getType(),
+            materials.getWidth(),
+            materials.getHeight(),
+            formatCOP.format(materials.getUnitPrice()),
+            materials.getQuantity(),
+            DateUtils.dateFormat(materials.getDateRegister())
         );
     }
 
@@ -60,13 +62,6 @@ public class MapperMaterials{
 
         materials.setCode(update.code());
         materials.setSupplier(supplier);
-       /* materials.setSupplier(
-                Objects.isNull(supplier) ?
-                        materials.getSupplier() :
-                        supplier
-        );
-
-        */
         materials.setName(update.name());
         materials.setType(update.type());
         materials.setWidth(update.width());

@@ -13,7 +13,7 @@ public record MaterialsResponse(
         String type,
         Float width,
         Float height,
-        BigDecimal unitPrice,
+        String unitPrice,
         Integer quantity,
         String dataRegister
 ) {
