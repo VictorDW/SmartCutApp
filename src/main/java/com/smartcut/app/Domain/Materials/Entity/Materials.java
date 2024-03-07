@@ -35,11 +35,11 @@ public class Materials {
     @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false)
-    private Float width;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal width;
 
-    @Column(nullable = false)
-    private Float height;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal height;
 
     @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal unitPrice;

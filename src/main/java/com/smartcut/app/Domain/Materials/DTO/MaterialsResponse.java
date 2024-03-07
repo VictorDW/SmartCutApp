@@ -11,8 +11,8 @@ public record MaterialsResponse(
         SupplierResponseBasic supplier,
         String name,
         String type,
-        Float width,
-        Float height,
+        BigDecimal width,
+        BigDecimal height,
         String unitPrice,
         Integer quantity,
         String dataRegister

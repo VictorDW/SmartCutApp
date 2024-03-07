@@ -29,10 +29,10 @@ public record MaterialsUpdate(
         String type,
 
         @NotNull(message = "{message.material.width}")
-        Float width,
+        BigDecimal width,
 
         @NotNull(message = "{message.material.height}")
-        Float height,
+        BigDecimal height,
 
         @NotNull(message = "{message.price.material}")
         @DecimalPesos
