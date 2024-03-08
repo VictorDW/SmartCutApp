@@ -1,4 +1,4 @@
-package com.smartcut.app.User.DTO;
+package com.smartcut.app.Domain.User.DTO;
 
 import jakarta.validation.constraints.*;
 

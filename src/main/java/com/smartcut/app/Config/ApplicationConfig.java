@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartcut.app.Error.ErrorResponse;
 import com.smartcut.app.Error.ExceptionManager;
-import com.smartcut.app.User.Repository.UserRepository;
+import com.smartcut.app.Domain.User.Repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

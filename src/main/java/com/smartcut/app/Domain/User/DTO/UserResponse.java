@@ -1,9 +1,7 @@
-package com.smartcut.app.User.DTO;
+package com.smartcut.app.Domain.User.DTO;
 
 import com.smartcut.app.Domain.Status;
-import com.smartcut.app.User.Role;
-
-import java.time.LocalDateTime;
+import com.smartcut.app.Domain.User.Role;
 
 public record UserResponse(
 

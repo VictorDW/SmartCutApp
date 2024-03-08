@@ -1,6 +1,4 @@
-package com.smartcut.app.User;
-
-import com.smartcut.app.User.Permission;
+package com.smartcut.app.Domain.User;
 
 import java.util.List;
 

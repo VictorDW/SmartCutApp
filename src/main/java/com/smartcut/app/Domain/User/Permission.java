@@ -1,4 +1,4 @@
-package com.smartcut.app.User;
+package com.smartcut.app.Domain.User;
 
 public enum Permission {
   REGISTER_ONE_USER,

@@ -1,16 +1,19 @@
 package com.smartcut.app.Util;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
-public class  {
+public class MessageComponent {
 
   @Autowired
-  public (MessageSource messageSource) {
-    MessageUtil.loadMessageSource(messageSource);
+  public MessageComponent(MessageSource messageSource) {
+    if (Objects.isNull(MessageUtil.getMessageSource())) {
+      MessageUtil.loadMessageSource(messageSource);
+    }
   }
 
   public String getMessage(String code) {

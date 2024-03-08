@@ -1,7 +1,9 @@
 package com.smartcut.app.Error;
 
 import com.smartcut.app.Util.DateUtils;
+import com.smartcut.app.Util.MessageComponent;
 import jakarta.validation.ConstraintViolationException;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,9 +15,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@AllArgsConstructor
 @ControllerAdvice
 public class ExceptionManager {
+
+  private final MessageComponent messageComponent;
 
 
   public static ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {
@@ -66,7 +70,9 @@ public class ExceptionManager {
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<ErrorArgumentResponse> handlerTypeInvalid(MethodArgumentTypeMismatchException exception) {
-    return ResponseEntity.badRequest().body(new ErrorArgumentResponse(exception.getName(), "Error en el tipo de dato"));
+    return ResponseEntity.badRequest().body(
+            new ErrorArgumentResponse(exception.getName(), messageComponent.getMessage("message.error.type"))
+    );
   }
 
   /**
@@ -75,7 +81,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handlerBadCredential() {
-    return generalExceptionHandler("Credenciales Incorrectas", HttpStatus.UNAUTHORIZED);
+    return generalExceptionHandler(messageComponent.getMessage("message.bad.credential"), HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -84,7 +90,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(DisabledException.class)
   public ResponseEntity<ErrorResponse> handlerDisableException() {
-    return ExceptionManager.generalExceptionHandler("El Usuario esta Deshabilitado", HttpStatus.UNAUTHORIZED);
+    return ExceptionManager.generalExceptionHandler(messageComponent.getMessage("message.error.disable.user"), HttpStatus.UNAUTHORIZED);
   }
 
   /**

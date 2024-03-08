@@ -1,8 +1,8 @@
 package com.smartcut.app.Config;
 
 import com.smartcut.app.Jwt.JwtAuthenticationFilter;
-import com.smartcut.app.User.Permission;
-import jakarta.annotation.Resource;
+import com.smartcut.app.Domain.User.Permission;
+import com.smartcut.app.Util.MessageComponent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

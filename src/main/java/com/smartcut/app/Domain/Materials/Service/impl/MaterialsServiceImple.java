@@ -9,6 +9,7 @@ import com.smartcut.app.Domain.Materials.Service.IMaterialsService;
 import com.smartcut.app.Domain.Status;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
 import com.smartcut.app.Error.MaterialNotFoundException;
+import com.smartcut.app.Util.MessageComponent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class MaterialsServiceImple implements IMaterialsService {
 
     private final ISupplierService supplierService;
     private final MaterialsRepository materialsRepository;
+    private final MessageComponent messageComponent;
+    private static final  String MESSAGE_MATERIALS = "Material";
+    private static final String MESSAGE_NOTFOUND = "message.error.notfound";
 
     /**
      * Crea un nuevo material y lo asocia a un proveedor existente utilizando la información proporcionada.
@@ -97,7 +101,7 @@ public class MaterialsServiceImple implements IMaterialsService {
                     );
                     return MapperMaterials.mapperMaterialsToMaterialsResponse(materialUpdate);
 
-                }).orElseThrow(()-> new MaterialNotFoundException("Material no encontrado"));
+                }).orElseThrow(() -> new MaterialNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_MATERIALS)));
     }
 
 
@@ -114,7 +118,7 @@ public class MaterialsServiceImple implements IMaterialsService {
           .ifPresentOrElse(
                 materials ->
                   materialsRepository.save(MapperMaterials.mapperState(materials))
-                ,()-> {throw new MaterialNotFoundException("Material no encontrado");}
+                ,()-> {throw new MaterialNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_MATERIALS));}
           );
     }
 }

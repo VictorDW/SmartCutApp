@@ -10,15 +10,15 @@ import java.util.Optional;
 //Patrón Singleton
 public class ValidateStatus {
 
-   static ValidateStatus instance;
-   static final String STATUS_DEFAULT = "ACTIVE";
-   static Map<String, Status> instanceStatus;
+   private static ValidateStatus instance;
+   private static final String STATUS_DEFAULT = "ACTIVE";
+   private static Map<String, Status> instanceStatus;
 
   private ValidateStatus() {
     fillMap();
   }
 
-  private static void fillMap() {
+  private void fillMap() {
     instanceStatus = new HashMap<>();
     instanceStatus.put(STATUS_DEFAULT, Status.ACTIVE);
     instanceStatus.put("INACTIVE", Status.INACTIVE);

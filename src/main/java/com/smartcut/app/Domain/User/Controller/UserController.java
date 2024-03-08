@@ -1,8 +1,8 @@
-package com.smartcut.app.User.Controller;
+package com.smartcut.app.Domain.User.Controller;
 
-import com.smartcut.app.User.DTO.UserResponse;
-import com.smartcut.app.User.DTO.UserUpdate;
-import com.smartcut.app.User.Service.IUserService;
+import com.smartcut.app.Domain.User.Service.IUserService;
+import com.smartcut.app.Domain.User.DTO.UserResponse;
+import com.smartcut.app.Domain.User.DTO.UserUpdate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;

@@ -1,6 +1,6 @@
 package com.smartcut.app.Auth.DTO;
 
-import com.smartcut.app.User.Role;
+import com.smartcut.app.Domain.User.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

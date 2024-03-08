@@ -1,11 +1,11 @@
-package com.smartcut.app.User.Mapper;
+package com.smartcut.app.Domain.User.Mapper;
 
 import com.smartcut.app.Auth.DTO.RegisterRequest;
 import com.smartcut.app.Domain.Status;
 import com.smartcut.app.Jwt.DTO.AuthResponse;
-import com.smartcut.app.User.DTO.UserResponse;
-import com.smartcut.app.User.DTO.UserUpdate;
-import com.smartcut.app.User.Entity.User;
+import com.smartcut.app.Domain.User.DTO.UserResponse;
+import com.smartcut.app.Domain.User.DTO.UserUpdate;
+import com.smartcut.app.Domain.User.Entity.User;
 import com.smartcut.app.Util.DateUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

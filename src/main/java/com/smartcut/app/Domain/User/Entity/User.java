@@ -1,4 +1,4 @@
-package com.smartcut.app.User.Entity;
+package com.smartcut.app.Domain.User.Entity;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.smartcut.app.Domain.Person.Entity.Person;
 import com.smartcut.app.Domain.Status;
-import com.smartcut.app.User.Role;
+import com.smartcut.app.Domain.User.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

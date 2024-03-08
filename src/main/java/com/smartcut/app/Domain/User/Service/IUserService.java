@@ -1,12 +1,9 @@
-package com.smartcut.app.User.Service;
+package com.smartcut.app.Domain.User.Service;
 
-import com.smartcut.app.User.DTO.UserResponse;
-import com.smartcut.app.User.DTO.UserUpdate;
-import org.springframework.http.HttpStatus;
+import com.smartcut.app.Domain.User.DTO.UserResponse;
+import com.smartcut.app.Domain.User.DTO.UserUpdate;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public interface IUserService {
     List<UserResponse> getAllUsers();

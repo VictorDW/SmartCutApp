@@ -1,6 +1,6 @@
 package com.smartcut.app.Jwt.DTO;
 
-import com.smartcut.app.User.Role;
+import com.smartcut.app.Domain.User.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

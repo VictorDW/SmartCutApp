@@ -1,6 +1,6 @@
-package com.smartcut.app.User.Repository;
+package com.smartcut.app.Domain.User.Repository;
 
-import com.smartcut.app.User.Entity.User;
+import com.smartcut.app.Domain.User.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

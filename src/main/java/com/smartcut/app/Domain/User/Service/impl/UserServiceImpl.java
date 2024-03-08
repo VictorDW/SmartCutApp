@@ -1,22 +1,22 @@
-package com.smartcut.app.User.Service.impl;
+package com.smartcut.app.Domain.User.Service.impl;
 
 import com.smartcut.app.Error.UserNotFoundException;
 import com.smartcut.app.Error.UsernameAlreadyExistException;
 import com.smartcut.app.Error.WithoutPermitsException;
-import com.smartcut.app.User.DTO.UserResponse;
-import com.smartcut.app.User.DTO.UserUpdate;
-import com.smartcut.app.User.Entity.User;
-import com.smartcut.app.User.Mapper.MapperUser;
-import com.smartcut.app.User.Repository.UserRepository;
-import com.smartcut.app.User.Role;
-import com.smartcut.app.User.Service.IUserService;
+import com.smartcut.app.Domain.User.DTO.UserResponse;
+import com.smartcut.app.Domain.User.DTO.UserUpdate;
+import com.smartcut.app.Domain.User.Entity.User;
+import com.smartcut.app.Domain.User.Mapper.MapperUser;
+import com.smartcut.app.Domain.User.Repository.UserRepository;
+import com.smartcut.app.Domain.User.Role;
+import com.smartcut.app.Domain.User.Service.IUserService;
+import com.smartcut.app.Util.MessageComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.*;
 
 @Service
@@ -25,7 +25,9 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String MESSAGE_USER_NOT_FOUND = "Usuario no encontrado";
+    private final MessageComponent messageComponent;
+    private static final String MESSAGE_USER = "Usuario";
+    private static final String MESSAGE_NOTFOUND = "message.error.notfound";
 
     @Override
     public List<UserResponse> getAllUsers() {
@@ -40,7 +42,7 @@ public class UserServiceImpl implements IUserService {
         final User authenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         if (!(username.equals(authenticatedUser.getUsername())) && authenticatedUser.getRole().equals(Role.USER)) {
-            throw new WithoutPermitsException("Acceso denegado, no tienes los permisos");
+            throw new WithoutPermitsException(messageComponent.getMessage("message.error.without.permits"));
         }
     }
 
@@ -49,7 +51,7 @@ public class UserServiceImpl implements IUserService {
         executeValidationAccess(username);
         return userRepository.findByUsername(username)
                 .map(MapperUser::mapperUserToUserResponse)
-                .orElseThrow(()-> new UserNotFoundException(MESSAGE_USER_NOT_FOUND));
+                .orElseThrow(()-> new UserNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_USER)));
     }
 
     public UserResponse update(UserUpdate update){
@@ -60,7 +62,7 @@ public class UserServiceImpl implements IUserService {
                    var userUpdate = userRepository.save(MapperUser.mapperUserUpdate(user, update, passwordEncoder));
                    return MapperUser.mapperUserToUserResponse(userUpdate);
                 }
-            ).orElseThrow(()-> new UserNotFoundException(MESSAGE_USER_NOT_FOUND));
+            ).orElseThrow(()-> new UserNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_USER)));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class UserServiceImpl implements IUserService {
         userRepository.findById(id)
                 .ifPresentOrElse(
                    user -> userRepository.save(MapperUser.mapperStatusUser(user)),
-                   ()-> {throw new UserNotFoundException(MESSAGE_USER_NOT_FOUND);}
+                   ()-> {throw new UserNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_USER));}
                 );
     }
 
@@ -88,7 +90,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void validateUsername(String username) {
         if (isUsernameAlreadyTaken(username)) {
-            throw new UsernameAlreadyExistException("El Username se encuentra en uso");
+            throw new UsernameAlreadyExistException(messageComponent.getMessage("message.error.already.exist"));
         }
     }
 
