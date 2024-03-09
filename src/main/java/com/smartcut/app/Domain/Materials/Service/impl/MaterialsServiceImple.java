@@ -9,7 +9,7 @@ import com.smartcut.app.Domain.Materials.Service.IMaterialsService;
 import com.smartcut.app.Domain.Status;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
 import com.smartcut.app.Error.MaterialNotFoundException;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class MaterialsServiceImple implements IMaterialsService {
 
     private final ISupplierService supplierService;
     private final MaterialsRepository materialsRepository;
-    private final MessageComponent messageComponent;
+    private final MessageUtil messageComponent;
     private static final  String MESSAGE_MATERIALS = "Material";
     private static final String MESSAGE_NOTFOUND = "message.error.notfound";
 

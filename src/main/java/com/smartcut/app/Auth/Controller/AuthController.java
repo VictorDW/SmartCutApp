@@ -3,7 +3,7 @@ package com.smartcut.app.Auth.Controller;
 import com.smartcut.app.Auth.Service.AuthService;
 import com.smartcut.app.Auth.DTO.LoginRequest;
 import com.smartcut.app.Auth.DTO.RegisterRequest;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 public class AuthController {
 
     private final AuthService authService;
-    private final MessageComponent messageComponent;
+    private final MessageUtil messageComponent;
 
     @PostMapping("login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request){

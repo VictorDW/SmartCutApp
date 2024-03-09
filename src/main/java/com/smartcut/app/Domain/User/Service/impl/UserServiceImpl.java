@@ -10,7 +10,7 @@ import com.smartcut.app.Domain.User.Mapper.MapperUser;
 import com.smartcut.app.Domain.User.Repository.UserRepository;
 import com.smartcut.app.Domain.User.Role;
 import com.smartcut.app.Domain.User.Service.IUserService;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MessageComponent messageComponent;
+    private final MessageUtil messageComponent;
     private static final String MESSAGE_USER = "Usuario";
     private static final String MESSAGE_NOTFOUND = "message.error.notfound";
 

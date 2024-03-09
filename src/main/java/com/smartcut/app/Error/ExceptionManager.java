@@ -1,11 +1,12 @@
 package com.smartcut.app.Error;
 
 import com.smartcut.app.Util.DateUtils;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,7 +20,7 @@ import java.util.List;
 @ControllerAdvice
 public class ExceptionManager {
 
-  private final MessageComponent messageComponent;
+  private final MessageUtil messageComponent;
 
 
   public static ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {
@@ -75,6 +76,10 @@ public class ExceptionManager {
     );
   }
 
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<ErrorResponse> handlerHttpNotReadable(HttpMessageNotReadableException exception) {
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
   /**
    * Este método permite manejar la excepción que se lanza en el momento en que las credenciales para autenticarse son incorrectas
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio

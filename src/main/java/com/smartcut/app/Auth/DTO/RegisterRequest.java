@@ -1,10 +1,7 @@
 package com.smartcut.app.Auth.DTO;
 
 import com.smartcut.app.Domain.User.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +46,7 @@ public class RegisterRequest {
 
     @NotBlank(message = "{message.empty.field}")
     private String address;
-    
+
+    @NotNull(message = "{message.null.role}")
     private Role role;
 }
