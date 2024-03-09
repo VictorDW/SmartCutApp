@@ -1,7 +1,7 @@
 package com.smartcut.app.Error;
 
 import com.smartcut.app.Util.DateUtils;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @ControllerAdvice
 public class ExceptionManager {
 
-  private final MessageComponent messageComponent;
+  private final MessageUtil messageComponent;
 
 
   public static ResponseEntity<ErrorResponse> generalExceptionHandler(String exceptionMassage, HttpStatus httpStatus) {

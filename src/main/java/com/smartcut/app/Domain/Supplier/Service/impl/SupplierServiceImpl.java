@@ -10,7 +10,7 @@ import com.smartcut.app.Domain.Supplier.Repository.SupplierRepository;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
 import com.smartcut.app.Error.SupplierAlreadyExitsException;
 import com.smartcut.app.Error.SupplierNotFoundException;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class SupplierServiceImpl implements ISupplierService {
 
     public final SupplierRepository supplierRepository;
-    public final MessageComponent messageComponent;
+    public final MessageUtil messageComponent;
     private static final String MESSAGE_SUPPLIER = "Proveedor";
     private static final String MESSAGE_NOTFOUND = "message.error.notfound";
 

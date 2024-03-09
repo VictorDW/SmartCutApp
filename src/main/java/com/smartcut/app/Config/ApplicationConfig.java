@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartcut.app.Error.ErrorResponse;
 import com.smartcut.app.Error.ExceptionManager;
 import com.smartcut.app.Domain.User.Repository.UserRepository;
-import com.smartcut.app.Util.MessageComponent;
+import com.smartcut.app.Util.MessageUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
-    private final MessageComponent messageComponent;
+    private final MessageUtil messageComponent;
     private final Logger loggerClass = LoggerFactory.getLogger(ApplicationConfig.class);
 
     /**
