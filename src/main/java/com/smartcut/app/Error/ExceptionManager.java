@@ -81,7 +81,7 @@ public class ExceptionManager {
    */
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handlerBadCredential() {
-    return generalExceptionHandler(messageComponent.getMessage("message.bad.credential"), HttpStatus.UNAUTHORIZED);
+    return generalExceptionHandler(messageComponent.getMessage("message.error.bad.credential"), HttpStatus.UNAUTHORIZED);
   }
 
   /**

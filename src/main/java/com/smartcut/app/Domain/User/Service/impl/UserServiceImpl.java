@@ -82,8 +82,8 @@ public class UserServiceImpl implements IUserService {
     public List<Object> checkUsernameAvailability(String username) {
 
         return isUsernameAlreadyTaken(username) ?
-            Arrays.asList("No Disponible", HttpStatus.BAD_REQUEST) :
-            Arrays.asList("Disponible", HttpStatus.OK);
+            Arrays.asList(messageComponent.getMessage("message.warn.username"), HttpStatus.BAD_REQUEST) :
+            Arrays.asList(messageComponent.getMessage("message.info.username"), HttpStatus.OK);
     }
 
 
@@ -93,7 +93,5 @@ public class UserServiceImpl implements IUserService {
             throw new UsernameAlreadyExistException(messageComponent.getMessage("message.error.already.exist"));
         }
     }
-
-
 
 }

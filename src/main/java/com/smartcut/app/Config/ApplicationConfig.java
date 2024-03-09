@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartcut.app.Error.ErrorResponse;
 import com.smartcut.app.Error.ExceptionManager;
 import com.smartcut.app.Domain.User.Repository.UserRepository;
+import com.smartcut.app.Util.MessageComponent;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
+    private final MessageComponent messageComponent;
     private final Logger loggerClass = LoggerFactory.getLogger(ApplicationConfig.class);
 
     /**
@@ -75,7 +77,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not fount"));
+                .orElseThrow(()-> new UsernameNotFoundException(messageComponent.getMessage("message.error.notfound","Usuario")));
     }
 
     /**
@@ -96,7 +98,7 @@ public class ApplicationConfig {
             response.setCharacterEncoding("UTF-8");
 
             response.getWriter().write(this.convertExceptionToJson(
-               "Autenticación Fallida: TOKEN INVALIDO O EXPIRADO",
+               messageComponent.getMessage("message.error.jwtAuthenticationEntrypoint"),
                HttpStatus.UNAUTHORIZED
             ));
         };
@@ -121,7 +123,7 @@ public class ApplicationConfig {
             response.setCharacterEncoding("UTF-8");
 
             response.getWriter().write(convertExceptionToJson(
-              "Solicitud Denegada: NO TIENE LOS PERMISOS",
+                messageComponent.getMessage("message.error.permissionsAccessDeniedHandler"),
               HttpStatus.FORBIDDEN
             ));
         };
