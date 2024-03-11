@@ -112,7 +112,7 @@ public class MaterialsServiceImple implements IMaterialsService {
      * @throws RuntimeException si no se encuentra ningún material con el ID proporcionado.
      */
     @Override
-    public void changeMaterialState(Long id)  throws RuntimeException {
+    public void changeMaterialState(Long id) {
 
         materialsRepository.findMaterialById(id)
           .ifPresentOrElse(

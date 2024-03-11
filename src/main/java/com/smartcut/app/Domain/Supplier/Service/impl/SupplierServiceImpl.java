@@ -8,15 +8,13 @@ import com.smartcut.app.Domain.Supplier.Entity.Supplier;
 import com.smartcut.app.Domain.Supplier.Mapper.MapperSupplier;
 import com.smartcut.app.Domain.Supplier.Repository.SupplierRepository;
 import com.smartcut.app.Domain.Supplier.Service.ISupplierService;
-import com.smartcut.app.Error.SupplierAlreadyExitsException;
+import com.smartcut.app.Error.SupplierAlreadyExistException;
 import com.smartcut.app.Error.SupplierNotFoundException;
 import com.smartcut.app.Util.MessageUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Service
@@ -64,14 +62,14 @@ public class SupplierServiceImpl implements ISupplierService {
     /**
      * Verifica si un proveedor con una cédula dada ya existe.
      * @param cedula
-     * @throws SupplierAlreadyExitsException sí se encuentra un proveedor con la cédula especificada en la base de datos.
+     * @throws SupplierAlreadyExistException sí se encuentra un proveedor con la cédula especificada en la base de datos.
      */
     private void existSupplier(String cedula) {
 
         var supplier = supplierRepository.findByCedula(cedula);
 
         if (supplier.isPresent()) {
-            throw new SupplierAlreadyExitsException(
+            throw new SupplierAlreadyExistException(
                 messageComponent.getMessage("message.error.cedula", MESSAGE_SUPPLIER, supplier.get().getCedula())
             );
         }

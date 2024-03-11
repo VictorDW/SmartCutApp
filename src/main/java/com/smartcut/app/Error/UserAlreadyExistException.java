@@ -1,7 +1,6 @@
 package com.smartcut.app.Error;
 
-public class SupplierAlreadyExitsException extends RuntimeException{
-
+public class UserAlreadyExistException extends RuntimeException{
   /**
    * Constructs a new runtime exception with the specified detail message.
    * The cause is not initialized, and may subsequently be initialized by a
@@ -10,7 +9,7 @@ public class SupplierAlreadyExitsException extends RuntimeException{
    * @param message the detail message. The detail message is saved for
    *                later retrieval by the {@link #getMessage()} method.
    */
-  public SupplierAlreadyExitsException(String message) {
+  public UserAlreadyExistException(String message) {
     super(message);
   }
 }

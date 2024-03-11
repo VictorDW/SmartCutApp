@@ -69,8 +69,10 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest request) {
 
-        //temporalmente, se validará en este método si el username ya existe
+        //Se validará  si el username ya existe
         userService.validateUsername(request.getUsername());
+        //Se validará  si el usuario ya esta registrado
+        userService.existUser(request.getCedula());
 
         var user = MapperUser.mapperRegisterRequestToUser(request, passwordEncoder);
         userRepository.save(user);

@@ -114,7 +114,7 @@ public class ExceptionManager {
    * @return un ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
   @ExceptionHandler(SupplierNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handlerNotFound(SupplierNotFoundException exception) {
+  public ResponseEntity<ErrorResponse> handlerSupplierNotFound(SupplierNotFoundException exception) {
     return generalExceptionHandler(exception.getMessage(), HttpStatus.NOT_FOUND);
   }
 
@@ -123,8 +123,8 @@ public class ExceptionManager {
    * @param exception
    * @return ErrorResponse que contiene información de la excepción lanzada a partir de la logica de negocio
    */
-  @ExceptionHandler(SupplierAlreadyExitsException.class)
-  public ResponseEntity<ErrorResponse> handlerAlreadyExits(SupplierAlreadyExitsException exception) {
+  @ExceptionHandler(SupplierAlreadyExistException.class)
+  public ResponseEntity<ErrorResponse> handlerSupplierAlreadyExits(SupplierAlreadyExistException exception) {
     return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
@@ -158,6 +158,11 @@ public class ExceptionManager {
 
   @ExceptionHandler(UsernameAlreadyExistException.class)
   public ResponseEntity<ErrorResponse> handlerUsernameAlreadyExist(UsernameAlreadyExistException exception) {
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(UserAlreadyExistException.class)
+  public ResponseEntity<ErrorResponse> handlerUserAlreadyExits(UserAlreadyExistException exception) {
     return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 

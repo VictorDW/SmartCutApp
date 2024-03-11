@@ -1,5 +1,6 @@
 package com.smartcut.app.Domain.User.Service.impl;
 
+import com.smartcut.app.Error.UserAlreadyExistException;
 import com.smartcut.app.Error.UserNotFoundException;
 import com.smartcut.app.Error.UsernameAlreadyExistException;
 import com.smartcut.app.Error.WithoutPermitsException;
@@ -54,11 +55,30 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(()-> new UserNotFoundException(messageComponent.getMessage(MESSAGE_NOTFOUND, MESSAGE_USER)));
     }
 
+    @Override
+    public void existUser(String cedula) {
+
+        var user = userRepository.findByCedula(cedula);
+
+        if(user.isPresent()) {
+            throw new UserAlreadyExistException(
+                messageComponent.getMessage("message.error.cedula", MESSAGE_USER, user.get().getCedula())
+            );
+        }
+    }
+
+    private void existUser(String newCedula, String currentCedula) {
+        if (!currentCedula.equals(newCedula)) {
+            existUser(newCedula);
+        }
+    }
+
     public UserResponse update(UserUpdate update){
 
         executeValidationAccess(update.username());
         return userRepository.findById(update.id())
             .map(user -> {
+                    existUser(update.cedula(), user.getCedula());
                    var userUpdate = userRepository.save(MapperUser.mapperUserUpdate(user, update, passwordEncoder));
                    return MapperUser.mapperUserToUserResponse(userUpdate);
                 }
