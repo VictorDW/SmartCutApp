@@ -38,7 +38,7 @@ public class SupplierController {
      * @return ResponseEntity con la información del proveedor creado y un código de estado HTTP 201 (Created) si la creación fue exitosa.
      */
     @PostMapping
-    public ResponseEntity<SupplierResponse> createSupplier(@RequestBody SupplierRequest request) {
+    public ResponseEntity<SupplierResponse> createSupplier(@RequestBody @Valid SupplierRequest request) {
 
         return new ResponseEntity<>(supplierService.create(request), HttpStatus.CREATED);
     }

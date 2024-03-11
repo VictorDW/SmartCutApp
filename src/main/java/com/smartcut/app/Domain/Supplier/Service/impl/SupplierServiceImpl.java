@@ -12,9 +12,11 @@ import com.smartcut.app.Error.SupplierAlreadyExitsException;
 import com.smartcut.app.Error.SupplierNotFoundException;
 import com.smartcut.app.Util.MessageUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Service
@@ -34,7 +36,7 @@ public class SupplierServiceImpl implements ISupplierService {
     @Override
     public SupplierResponse create(SupplierRequest request) {
 
-        hasSupplier(request.cedula());
+        existSupplier(request.cedula());
 
         return MapperSupplier.mapperSuppliertToSupplierResponse(
                 supplierRepository.save(
@@ -60,18 +62,30 @@ public class SupplierServiceImpl implements ISupplierService {
     }
 
     /**
-     * Verifica si ya existe un proveedor con una cédula específica en la base de datos.
-     *
-     * @param cedula El número de cédula a verificar para el proveedor.
+     * Verifica si un proveedor con una cédula dada ya existe.
+     * @param cedula
      * @throws SupplierAlreadyExitsException sí se encuentra un proveedor con la cédula especificada en la base de datos.
      */
-    private void hasSupplier(String cedula) {
+    private void existSupplier(String cedula) {
 
         var supplier = supplierRepository.findByCedula(cedula);
-        if(supplier.isPresent())
+
+        if (supplier.isPresent()) {
             throw new SupplierAlreadyExitsException(
-                messageComponent.getMessage("message.error.supplier.registered",MESSAGE_SUPPLIER, supplier.get().getCedula())
+                messageComponent.getMessage("message.error.cedula", MESSAGE_SUPPLIER, supplier.get().getCedula())
             );
+        }
+    }
+
+    /**
+     * Verifica si una nueva cédula es diferente de la cédula actual y, de ser así, llama al método <Code>existSupplier(String cedula)</Code>
+     * @param newCedula cedula enviada en el JSON
+     * @param currentCedula cedula actual del proveedor
+     */
+    private void existSupplier(String newCedula, String currentCedula) {
+        if (!currentCedula.equals(newCedula)) {
+            this.existSupplier(newCedula);
+        }
     }
 
     /**
@@ -114,6 +128,7 @@ public class SupplierServiceImpl implements ISupplierService {
 
         return supplierRepository.findBySupplierId(update.id())
                 .map(supplier -> {
+                    existSupplier(update.cedula(), supplier.getCedula());
                     var supplierUpdate = supplierRepository.save(
                             MapperSupplier.mapperSupplierUpdate(supplier, update)
                     );
