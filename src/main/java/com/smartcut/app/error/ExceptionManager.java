@@ -64,7 +64,7 @@ public class ExceptionManager {
                           .stream()
                           .map(ErrorArgumentResponse::new)
                           .findFirst()
-                          .get();
+                          .orElseThrow();
 
     return ResponseEntity.badRequest().body(errors);
   }
