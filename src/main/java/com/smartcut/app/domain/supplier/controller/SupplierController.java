@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Controlador que permite recibir las solicitudes a la sección de proveedores de la API y retornar las respuestas
@@ -72,7 +71,7 @@ public class SupplierController {
      * @return ResponseEntity con una lista que contiene la información de todos los proveedores y un código de estado HTTP 200 (OK).
      */
     @GetMapping
-    public ResponseEntity<List<SupplierResponse>> getAllSupplier(@RequestParam Optional<String> status) {
+    public ResponseEntity<List<SupplierResponse>> getAllSupplier(@RequestParam(required = false) String status) {
         Status state = ValidateStatus.getStatus(status);
         return ResponseEntity.ok(supplierService.getAll(state));
     }

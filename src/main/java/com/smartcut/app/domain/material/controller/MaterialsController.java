@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -67,7 +66,7 @@ public class MaterialsController {
      * @return ResponseEntity con una lista que contiene la información de todos los materiales y un código de estado HTTP 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<MaterialsResponse>> getAllMaterials(@RequestParam Optional<String> status) {
+    public ResponseEntity<List<MaterialsResponse>> getAllMaterials(@RequestParam(required = false) String status) {
         Status state = ValidateStatus.getStatus(status);
         return ResponseEntity.ok(materialsService.getAll(state));
     }
